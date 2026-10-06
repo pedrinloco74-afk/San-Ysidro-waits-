@@ -1,0 +1,71 @@
+{
+  "title": "Systems That Keep Their Promises",
+  "subtitle": "A field guide to building dependable data products",
+  "author": "Cesar Pedrin",
+  "edition": "First digital edition · 2026",
+  "description": "An original, practical guide to the decisions behind reliable data systems: what to promise, where facts live, how writes become durable, why read models drift, and how to recover when reality gets messy.",
+  "language": "en",
+  "coverNote": "A practical guide for engineers who want their systems to behave as clearly as their product promises.",
+  "chapters": [
+    {
+      "id": "before-you-begin",
+      "title": "Before you begin",
+      "kicker": "A note from Cesar",
+      "summary": "Why this guide starts with promises instead of technology."
+    },
+    {
+      "id": "promise-before-platform",
+      "title": "Promise before platform",
+      "kicker": "01 · Start with the user",
+      "summary": "Turn a vague request for reliability into visible, testable promises."
+    },
+    {
+      "id": "give-every-fact-a-home",
+      "title": "Give every fact a home",
+      "kicker": "02 · Shape the information",
+      "summary": "Model ownership, identity, and change before choosing storage."
+    },
+    {
+      "id": "commit-before-you-celebrate",
+      "title": "Commit before you celebrate",
+      "kicker": "03 · Make writes trustworthy",
+      "summary": "Follow a write from request to durable record, including retries and uncertainty."
+    },
+    {
+      "id": "build-the-read-you-need",
+      "title": "Build the read you actually need",
+      "kicker": "04 · Serve useful views",
+      "summary": "Design queries, projections, caches, and freshness as one experience."
+    },
+    {
+      "id": "let-work-travel-as-messages",
+      "title": "Let work travel as messages",
+      "kicker": "05 · Coordinate without coupling",
+      "summary": "Use asynchronous work without losing ownership, order, or recovery paths."
+    },
+    {
+      "id": "split-without-losing-the-plot",
+      "title": "Split without losing the plot",
+      "kicker": "06 · Grow with intention",
+      "summary": "Partition data and work around real traffic while planning for skew and change."
+    },
+    {
+      "id": "choose-where-truth-lives",
+      "title": "Choose where truth lives",
+      "kicker": "07 · Coordinate carefully",
+      "summary": "Place invariants, concurrency control, and conflict handling where they belong."
+    },
+    {
+      "id": "practice-the-failure",
+      "title": "Practice the failure",
+      "kicker": "08 · Operate and recover",
+      "summary": "Make health observable, rehearse recovery, and evolve the system without drama."
+    },
+    {
+      "id": "from-promise-to-running-system",
+      "title": "From promise to running system",
+      "kicker": "Field notes · A worked design",
+      "summary": "Bring the ideas together in a small neighborhood co-op ordering service."
+    }
+  ]
+}

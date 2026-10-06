@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f3ee">
+  <meta name="description" content="An original, practical field guide to building dependable data products by Cesar Pedrin.">
+  <title>Systems That Keep Their Promises — Cesar Pedrin</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to the book</a>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar" aria-label="Book navigation">
+      <a class="brand" href="#home" id="brandHome" aria-label="Fieldnotes library, book cover">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none">
+            <path d="M8 10.5c4.9-.4 8.9.6 12 3v17c-3.1-2.4-7.1-3.4-12-3V10.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+            <path d="M32 10.5c-4.9-.4-8.9.6-12 3v17c3.1-2.4 7.1-3.4 12-3V10.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+            <path d="M13 16.5c2.3.1 4.1.6 5.6 1.5M13 21c2.3.1 4.1.6 5.6 1.5m8.4-6c-2.3.1-4.1.6-5.6 1.5m5.6 3c-2.3.1-4.1.6-5.6 1.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="brand-copy"><strong>FIELDNOTES</strong><small>Systems library</small></span>
+      </a>
+
+      <div class="sidebar-book-card">
+        <div class="mini-cover" aria-hidden="true">
+          <span class="mini-cover-label">FIELD GUIDE · 01</span>
+          <span class="mini-cover-lines">Systems<br>that keep<br><i>their promises</i></span>
+          <span class="mini-cover-orbit"></span>
+          <span class="mini-cover-by">CESAR PEDRIN</span>
+        </div>
+        <div class="sidebar-book-meta">
+          <span class="overline">NOW READING</span>
+          <strong>Systems That Keep<br>Their Promises</strong>
+          <span>By Cesar Pedrin</span>
+        </div>
+      </div>
+
+      <nav class="contents-nav" aria-label="Table of contents">
+        <div class="nav-heading">
+          <span>CONTENTS</span>
+          <span class="nav-count" id="chapterCount">10</span>
+        </div>
+        <button class="nav-link home-link is-active" id="homeNav" type="button">
+          <span class="home-icon" aria-hidden="true">⌂</span>
+          <span>Cover &amp; overview</span>
+        </button>
+        <ol class="chapter-list" id="chapterList"></ol>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="reading-progress-label">
+          <span>YOUR PROGRESS</span><span id="progressPercent">0%</span>
+        </div>
+        <div class="progress-track" role="progressbar" aria-label="Reading progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressTrack">
+          <span id="progressFill"></span>
+        </div>
+        <div class="sidebar-actions">
+          <a class="download-link" href="downloads/systems-that-keep-their-promises.pdf" download>
+            <span class="download-icon" aria-hidden="true">↓</span> Download PDF
+          </a>
+          <a class="download-link" href="downloads/systems-that-keep-their-promises.epub" download>
+            <span class="download-icon" aria-hidden="true">↓</span> Download EPUB
+          </a>
+          <button class="sidebar-print" id="printBook" type="button" title="Print the current page or save it as PDF">
+            <span aria-hidden="true">▤</span> Print / save PDF
+          </button>
+        </div>
+        <p class="sidebar-edition">First digital edition · 2026</p>
+      </div>
+    </aside>
+
+    <button class="sidebar-backdrop" id="sidebarBackdrop" type="button" aria-label="Close contents menu" tabindex="-1"></button>
+
+    <main class="main-panel" id="main-content">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-button menu-toggle" id="menuToggle" type="button" aria-label="Open table of contents" aria-expanded="false" aria-controls="sidebar">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+          </button>
+          <div class="breadcrumbs"><span>FIELDNOTES</span><span class="breadcrumb-slash">/</span><strong id="currentLocation">The book</strong></div>
+        </div>
+        <div class="toolbar" aria-label="Reading tools">
+          <button class="tool-button search-toggle" id="searchToggle" type="button" aria-expanded="false" aria-controls="searchPanel" title="Search the book">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4.2 4.2"/></svg>
+            <span>Search</span><kbd>/</kbd>
+          </button>
+          <span class="tool-divider" aria-hidden="true"></span>
+          <div class="type-tools" aria-label="Text size">
+            <button class="icon-button type-button" id="fontDown" type="button" aria-label="Decrease text size" title="Decrease text size">A<sup>−</sup></button>
+            <button class="icon-button type-button" id="fontUp" type="button" aria-label="Increase text size" title="Increase text size">A<sup>+</sup></button>
+          </div>
+          <button class="icon-button theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme" title="Switch theme">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.4 15.1A8.1 8.1 0 0 1 8.9 4.6 8.3 8.3 0 1 0 19.4 15.1Z"/></svg>
+          </button>
+          <a class="top-download" href="downloads/systems-that-keep-their-promises.pdf" download aria-label="Download the PDF edition">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 18v3h14v-3"/></svg>
+            <span>PDF</span>
+          </a>
+        </div>
+      </header>
+
+      <section class="search-panel" id="searchPanel" aria-label="Search this book" hidden>
+        <div class="search-field-wrap">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4.2 4.2"/></svg>
+          <input id="searchInput" type="search" placeholder="Search chapters, ideas, and examples…" autocomplete="off" aria-label="Search the whole book">
+          <kbd>ESC</kbd>
+        </div>
+        <div class="search-meta" id="searchMeta">Search the full text of the book.</div>
+        <div class="search-results" id="searchResults" role="list"></div>
+      </section>
+
+      <div class="page-wrap">
+        <section class="landing" id="landing" aria-labelledby="book-title">
+          <div class="landing-eyebrow"><span class="eyebrow-dot"></span> FIELD GUIDE <span class="eyebrow-rule"></span> FIRST DIGITAL EDITION · 2026</div>
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <p class="hero-kicker">A practical guide for people who build with data</p>
+              <h1 id="book-title">Systems that<br>keep their <em>promises.</em></h1>
+              <p class="hero-subtitle">A field guide to building dependable data products</p>
+              <div class="byline"><span class="byline-rule"></span><span>Written by <strong>Cesar Pedrin</strong></span></div>
+              <p class="hero-description">How do you know a write really happened? Which copy of a fact should users trust? What should your product say when a service is slow? Start with the promises, then build the system that can keep them.</p>
+              <div class="hero-actions">
+                <button class="primary-button" id="startReading" type="button">Start reading <span aria-hidden="true">→</span></button>
+                <a class="secondary-button" href="downloads/systems-that-keep-their-promises.pdf" download>Download the PDF <span aria-hidden="true">↓</span></a>
+              </div>
+              <a class="epub-alt" href="downloads/systems-that-keep-their-promises.epub" download>Prefer an e-reader? Get the EPUB <span aria-hidden="true">↓</span></a>
+              <div class="book-facts" aria-label="Book details">
+                <div><strong>10</strong><span>CHAPTERS</span></div>
+                <div><strong>~40</strong><span>MIN READ</span></div>
+                <div><strong>01</strong><span>WORKED DESIGN</span></div>
+              </div>
+            </div>
+            <div class="cover-stage" aria-label="Book cover artwork">
+              <div class="cover-shadow"></div>
+              <div class="cover-art">
+                <div class="cover-topline"><span>FIELDNOTES</span><span>NO. 01</span></div>
+                <div class="cover-graphic" aria-hidden="true">
+                  <svg viewBox="0 0 340 238" fill="none">
+                    <path class="orbit orbit-1" d="M28 153C75 40 247 24 315 112"/>
+                    <path class="orbit orbit-2" d="M28 153c64 68 197 61 287-8"/>
+                    <path class="orbit orbit-3" d="M44 95c57 94 159 139 265 96"/>
+                    <path class="orbit orbit-4" d="M86 28c27 65 49 128 56 197"/>
+                    <circle class="node node-a" cx="28" cy="153" r="7"/><circle class="node node-b" cx="315" cy="112" r="8"/>
+                    <circle class="node node-c" cx="315" cy="112" r="18"/><circle class="node node-d" cx="151" cy="225" r="6"/>
+                    <circle class="node node-e" cx="44" cy="95" r="5"/><circle class="node node-f" cx="279" cy="191" r="5"/>
+                    <path class="crosshair" d="M213 75v16m-8-8h16M97 167v12m-6-6h12"/>
+                  </svg>
+                </div>
+                <div class="cover-title">Systems<br>that keep<br><em>their promises.</em></div>
+                <div class="cover-subtitle">A FIELD GUIDE TO BUILDING<br>DEPENDABLE DATA PRODUCTS</div>
+                <div class="cover-bottom"><span>CESAR PEDRIN</span><span>2026</span></div>
+              </div>
+              <div class="cover-caption"><span class="caption-mark">✳</span> Practical foundations. Human promises.</div>
+            </div>
+          </div>
+
+          <section class="takeaways" aria-labelledby="takeaways-title">
+            <div class="section-intro"><span class="overline">WHAT THIS GUIDE IS ABOUT</span><h2 id="takeaways-title">Good systems make their promises visible.</h2></div>
+            <div class="takeaway-grid">
+              <div class="takeaway-card"><span class="takeaway-number">01</span><h3>Know what must be true</h3><p>Translate product expectations into explicit rules, freshness limits, and durable outcomes.</p></div>
+              <div class="takeaway-card"><span class="takeaway-number">02</span><h3>Make change survivable</h3><p>Design writes, retries, messages, and projections for the messy timing of real networks.</p></div>
+              <div class="takeaway-card"><span class="takeaway-number">03</span><h3>Prepare to recover</h3><p>Keep the system understandable when it is slow, overloaded, or coming back from failure.</p></div>
+            </div>
+          </section>
+          <div class="landing-note"><span aria-hidden="true">↳</span> Start with the promise. Let the platform follow.</div>
+        </section>
+
+        <article class="reader" id="reader" aria-labelledby="chapterTitle" hidden>
+          <header class="chapter-header">
+            <div class="chapter-kicker" id="chapterKicker"></div>
+            <h1 id="chapterTitle"></h1>
+            <p id="chapterSummary"></p>
+            <div class="chapter-meta"><span id="chapterIndex"></span><span class="meta-dot"></span><span>CESAR PEDRIN</span></div>
+          </header>
+          <div class="article-body" id="articleBody"></div>
+          <nav class="chapter-pagination" id="chapterPagination" aria-label="Chapter navigation"></nav>
+          <div class="reader-endnote"><span class="endnote-symbol" aria-hidden="true">✳</span><span>Systems that keep their promises<br><strong>Cesar Pedrin · 2026</strong></span></div>
+        </article>
+      </div>
+
+      <footer class="page-footer">
+        <span>© 2026 Cesar Pedrin · First digital edition</span>
+        <span>An original field guide to dependable data products</span>
+      </footer>
+    </main>
+  </div>
+  <noscript><div class="noscript-message">This e-book reader needs JavaScript to load its chapters. You can still download the EPUB using the link above.</div></noscript>
+</body>
+</html>
