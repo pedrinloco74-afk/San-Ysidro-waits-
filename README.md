@@ -16,10 +16,10 @@ is cleaned up later.
 
 | What | Link |
 |---|---|
-| **Full book — PDF (29 pages)** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/52627dfa0e078abec7e925786a76d7adced218e6/The_Ex_Files_Crossword_Book_8.5x11_KDP.pdf](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/52627dfa0e078abec7e925786a76d7adced218e6/The_Ex_Files_Crossword_Book_8.5x11_KDP.pdf) |
-| **Kindle eBook — EPUB** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/52627dfa0e078abec7e925786a76d7adced218e6/ebook/THE_EX_FILES_kindle.epub](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/52627dfa0e078abec7e925786a76d7adced218e6/ebook/THE_EX_FILES_kindle.epub) |
-| **eBook cover — JPG 1600x2560** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/52627dfa0e078abec7e925786a76d7adced218e6/cover/The_Ex_Files_ebook_cover_1600x2560.jpg](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/52627dfa0e078abec7e925786a76d7adced218e6/cover/The_Ex_Files_ebook_cover_1600x2560.jpg) |
-| **Paperback cover — PDF wrap** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/52627dfa0e078abec7e925786a76d7adced218e6/cover/The_Ex_Files_paperback_wrap.pdf](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/52627dfa0e078abec7e925786a76d7adced218e6/cover/The_Ex_Files_paperback_wrap.pdf) |
+| **Full book — PDF (29 pages)** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/41da57857ce04d631bbee0aefaa0635dc5ec07a3/docs/book.pdf](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/41da57857ce04d631bbee0aefaa0635dc5ec07a3/docs/book.pdf) |
+| **Kindle eBook — EPUB** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/41da57857ce04d631bbee0aefaa0635dc5ec07a3/ebook/THE_EX_FILES_kindle.epub](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/41da57857ce04d631bbee0aefaa0635dc5ec07a3/ebook/THE_EX_FILES_kindle.epub) |
+| **eBook cover — JPG 1600x2560** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/41da57857ce04d631bbee0aefaa0635dc5ec07a3/cover/The_Ex_Files_ebook_cover_1600x2560.jpg](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/41da57857ce04d631bbee0aefaa0635dc5ec07a3/cover/The_Ex_Files_ebook_cover_1600x2560.jpg) |
+| **Paperback cover — PDF wrap** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/41da57857ce04d631bbee0aefaa0635dc5ec07a3/cover/The_Ex_Files_paperback_wrap.pdf](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/41da57857ce04d631bbee0aefaa0635dc5ec07a3/cover/The_Ex_Files_paperback_wrap.pdf) |
 
 No GitHub account is needed. On a desktop the file downloads immediately; on
 GitHub's file page (not the raw link) use the **Download raw file** button.
@@ -170,6 +170,13 @@ funny themed answers — CLOSURE, WHISKEY, DIVORCE, UNSENT, DUMPED, SWIPED, MA'A
 no, MAD, DUO and friends — with three clue call-outs underneath. It is drawn as
 vectors (not a bitmap), so the wordmark and grid stay sharp at any size, including
 the small thumbnail Amazon shows in search results.
+
+Page 1 of the print interior draws that same cover routine — same wordmark, same
+grid, same answers — scaled to sit inside the trim with 1 in side margins. The
+interior has no bleed, so the artwork is set into the page as a framed plate
+rather than running off the edge. `src/render.py` calls the one routine in
+`src/cover_design.py`, so the paperback and the Kindle edition cannot show
+different covers.
 
 `tools/make_epub.py` validates its own output: it checks the EPUB `mimetype` is
 stored first and uncompressed, parses every XML file, confirms every manifest and
