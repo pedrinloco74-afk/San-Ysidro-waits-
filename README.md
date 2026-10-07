@@ -10,15 +10,42 @@ key and comedy filler pages.
 
 ## Files to upload
 
+### Kindle eBook edition
+
+| File | Use it for | KDP setting |
+|---|---|---|
+| `ebook/THE_EX_FILES_kindle.epub` | **Kindle eBook manuscript** | Upload as the eBook content file. EPUB is KDP's recommended format |
+| `cover/The_Ex_Files_ebook_cover_1600x2560.jpg` | **Kindle eBook cover** | 1600 x 2560 px, 1.6 ratio — exactly what KDP asks for |
+
+The EPUB is sold as a **Kindle eBook**, so it does not use print trim sizes.
+It is reflowable EPUB 3 with an EPUB 2 `toc.ncx` fallback, a clickable table of
+contents, and both formats of navigation landmarks. Every grid ships as a
+high-resolution PNG (1192 px, ~25 KB each) so readers can zoom in on any Kindle
+or in the Kindle app; every clue and answer stays as selectable text so font
+size, search and dictionary lookup keep working.
+
+### Paperback edition
+
 | File | Use it for | KDP setting |
 |---|---|---|
 | `The_Ex_Files_Crossword_Book_8.5x11_KDP.pdf` | **Paperback interior** | 8.5 x 11 in, **No bleed**, Black & white on **White** paper, **29 pages** |
 | `cover/The_Ex_Files_paperback_wrap.pdf` | **Paperback cover** (front + spine + back, 0.125" bleed included) | Upload as the cover PDF |
-| `cover/The_Ex_Files_ebook_cover_1600x2560.jpg` | **Kindle eBook cover** | 1600 x 2560 px, 1.6 ratio — exactly what KDP asks for |
 
 The interior PDF already contains the title page, copyright/instructions page, all
 15 puzzles, 5 answer-key pages, and the comedy pages. Everything is black text on
 white, all fonts are embedded, and no content enters the trim margins.
+
+## What differs between the two editions
+
+Both editions contain the same 15 puzzles, the same clues and the same answer
+key (generated from one build, so they can never disagree).
+
+* **Print** has tick-boxes, the scorecard and blank lines you write on, plus
+  page numbers and a spine.
+* **eBook** replaces the write-on pages with read-only versions (a note explains
+  this), drops page numbers and headers, and adds a clickable contents list.
+* The eBook cover is the same artwork as the print front cover, exported at
+  KDP's required 1600 x 2560 px.
 
 ## Spine width note
 
@@ -109,8 +136,15 @@ Rebuild everything:
 ```bash
 python tools/check_bank.py     # word-bank sanity: A-Z, clue present, no dupes
 python tools/make_book.py      # 15 puzzles + verification + interior PDF
+python tools/make_epub.py      # Kindle EPUB (reads build/puzzles.json)
 python src/covers.py           # ebook cover + paperback wrap
 ```
+
+`tools/make_epub.py` validates its own output: it checks the EPUB `mimetype` is
+stored first and uncompressed, parses every XML file, confirms every manifest and
+in-page reference resolves, and then walks all 15 puzzles checking that the exact
+clue text, every clue number and every answer image made it into the book. It
+exits non-zero rather than shipping a broken file.
 
 `build/puzzles.json` holds the machine-readable answer key for every puzzle.
 
