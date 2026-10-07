@@ -8,6 +8,28 @@ key and comedy filler pages.
 
 ---
 
+## Direct download links
+
+The repository is public, so these links download the finished files straight to
+your device. They are pinned to a commit, so they keep working even if the branch
+is cleaned up later.
+
+| What | Link |
+|---|---|
+| **Full book — PDF (29 pages)** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/52627dfa0e078abec7e925786a76d7adced218e6/The_Ex_Files_Crossword_Book_8.5x11_KDP.pdf](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/52627dfa0e078abec7e925786a76d7adced218e6/The_Ex_Files_Crossword_Book_8.5x11_KDP.pdf) |
+| **Kindle eBook — EPUB** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/52627dfa0e078abec7e925786a76d7adced218e6/ebook/THE_EX_FILES_kindle.epub](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/52627dfa0e078abec7e925786a76d7adced218e6/ebook/THE_EX_FILES_kindle.epub) |
+| **eBook cover — JPG 1600x2560** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/52627dfa0e078abec7e925786a76d7adced218e6/cover/The_Ex_Files_ebook_cover_1600x2560.jpg](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/52627dfa0e078abec7e925786a76d7adced218e6/cover/The_Ex_Files_ebook_cover_1600x2560.jpg) |
+| **Paperback cover — PDF wrap** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/52627dfa0e078abec7e925786a76d7adced218e6/cover/The_Ex_Files_paperback_wrap.pdf](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/52627dfa0e078abec7e925786a76d7adced218e6/cover/The_Ex_Files_paperback_wrap.pdf) |
+
+No GitHub account is needed. On a desktop the file downloads immediately; on
+GitHub's file page (not the raw link) use the **Download raw file** button.
+
+> Tip: a `raw` link served this way works in any browser. If you paste it into a
+> chat app it may get a preview card instead of downloading — that is normal, the
+> download button still works.
+
+---
+
 ## Files to upload
 
 ### Kindle eBook edition
