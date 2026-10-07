@@ -159,8 +159,17 @@ Rebuild everything:
 python tools/check_bank.py     # word-bank sanity: A-Z, clue present, no dupes
 python tools/make_book.py      # 15 puzzles + verification + interior PDF
 python tools/make_epub.py      # Kindle EPUB (reads build/puzzles.json)
-python src/covers.py           # ebook cover + paperback wrap
+python tools/make_covers.py    # ebook cover PDF+JPG, paperback wrap PDF
+python tools/check_cover.py    # text-collision + bounds check on both covers
 ```
+
+### About the cover
+
+The front cover carries a real, completed crossword made only from the book's
+funny themed answers — CLOSURE, WHISKEY, DIVORCE, UNSENT, DUMPED, SWIPED, MA'AM
+no, MAD, DUO and friends — with three clue call-outs underneath. It is drawn as
+vectors (not a bitmap), so the wordmark and grid stay sharp at any size, including
+the small thumbnail Amazon shows in search results.
 
 `tools/make_epub.py` validates its own output: it checks the EPUB `mimetype` is
 stored first and uncompressed, parses every XML file, confirms every manifest and
