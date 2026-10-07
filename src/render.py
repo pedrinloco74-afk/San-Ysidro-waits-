@@ -13,10 +13,15 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
+from cover_design import PANEL_DARK, front_cover
+
 PAGE_W, PAGE_H = letter                    # 612 x 792 pt
 WORDS = {12: "Twelve", 15: "Fifteen"}
 MARGIN = 0.55 * 72
 FONT_DIR = "/usr/share/fonts/truetype/dejavu"
+
+# Native size of the cover artwork; page 1 scales it into the trim.
+COVER_W, COVER_H = 432.0, 691.2
 
 INK = HexColor("#1b1b1d")
 SOFT = HexColor("#6b6b73")
@@ -54,67 +59,30 @@ def wrap(text, font, size, width):
 # front matter
 # ---------------------------------------------------------------------------
 def title_page(c, meta):
-    """Interior title page. Print interiors stay on white, no bleed."""
+    """Interior page 1: the cover, set into the page as a framed plate.
+
+    The print interior has no bleed, so the cover artwork is placed inside the
+    trim rather than running off the edge. It is drawn by the same vector
+    routine as the eBook cover, so the paperback and the Kindle edition can
+    never drift apart.
+    """
     c.setFillColor(PAPER)
     c.rect(0, 0, PAGE_W, PAGE_H, stroke=0, fill=1)
 
-    c.setFillColor(ACCENT)
-    c.rect(MARGIN, PAGE_H - 2.35 * 72, PAGE_W - 2 * MARGIN, 0.11 * 72,
-           stroke=0, fill=1)
+    s = min((PAGE_W - 2 * 72.0) / COVER_W,        # 1 in side margins
+            (PAGE_H - 2 * 0.4 * 72) / COVER_H)     # 0.4 in top/bottom
+    box_w, box_h = COVER_W * s, COVER_H * s
+    x, y = (PAGE_W - box_w) / 2.0, (PAGE_H - box_h) / 2.0
 
-    c.setFillColor(ACCENT)
-    c.setFont("Head-Bold", 14)
-    c.drawString(MARGIN, PAGE_H - 1.75 * 72, "THE")
+    c.saveState()
+    c.translate(x, y)
+    c.scale(s, s)
+    front_cover(c, COVER_W, COVER_H)
+    c.restoreState()
 
-    c.setFillColor(INK)
-    c.setFont("Head-Bold", 66)
-    c.drawString(MARGIN, PAGE_H - 2.75 * 72, "EX-FILES")
-
-    c.setFillColor(SOFT)
-    c.setFont("Body", 15)
-    c.drawString(MARGIN, PAGE_H - 3.15 * 72,
-                 "A Crossword Book for Men Who Are Absolutely Fine")
-
-    c.setStrokeColor(LINE)
-    c.setLineWidth(0.8)
-    c.line(MARGIN, PAGE_H - 3.55 * 72, PAGE_W - MARGIN, PAGE_H - 3.55 * 72)
-
-    lines = [
-        (("Body"), 12.5, f"{WORDS[meta['puzzle_count']]} puzzles. One ex-girlfriend. Zero closure.", 0),
-        ("", 0, "", 14),
-        ("Body", 12.5, "Somewhere in here are the things you said out loud at two in the", 0),
-        ("Body", 12.5, "morning, written down as clues so you can finally get them out of", 0),
-        ("Body", 12.5, "your system.", 0),
-        ("", 0, "", 14),
-        ("Body-Bold", 13, "You are not sad. You are themed.", 0),
-    ]
-    y = PAGE_H - 4.05 * 72
-    for font, size, text, pad in lines:
-        if font:
-            c.setFillColor(INK if "Bold" in font else SOFT)
-            c.setFont(font, size)
-            c.drawString(MARGIN, y, text)
-        y -= (size + 6 + pad)
-
-    # little crossword motif
-    c.setStrokeColor(LINE)
+    c.setStrokeColor(PANEL_DARK)
     c.setLineWidth(1)
-    cell = 26
-    x0, y0 = MARGIN, MARGIN + 60
-    pattern = [".#.", "###", ".#."]
-    for r in range(3):
-        for col in range(3):
-            x, yy = x0 + col * cell, y0 - r * cell
-            if pattern[r][col] == "#":
-                c.setFillColor(INK)
-                c.rect(x, yy, cell, cell, stroke=0, fill=1)
-            else:
-                c.rect(x, yy, cell, cell, stroke=1, fill=0)
-
-    c.setFillColor(SOFT)
-    c.setFont("Head", 10.5)
-    c.drawString(MARGIN, MARGIN + 10,
-                 f"{meta['puzzle_count']} PUZZLES   ·   FULL ANSWER KEY   ·   LARGE 8.5 x 11 PAGES")
+    c.rect(x, y, box_w, box_h, stroke=1, fill=0)
     c.showPage()
 
 
