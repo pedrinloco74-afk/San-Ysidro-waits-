@@ -1,0 +1,25 @@
+KDP UPLOAD GUIDE — THE EX-FILES
+===============================
+
+This kit contains the four upload files, plus a KDP listing-details text file.
+
+PAPERBACK
+1. Start a Paperback title in KDP.
+2. Enter the title and author exactly as shown in KDP_LISTING_DETAILS.txt.
+3. Set trim size to 8.5 x 11 inches, black & white interior, white paper,
+   and no bleed.
+4. Upload 01_Paperback_Interior_8.5x11_25_pages.pdf as the manuscript.
+5. Upload 02_Paperback_Full_Cover_Wrap.pdf as the full cover.
+6. The back cover leaves a white barcode panel for KDP. Select a KDP ISBN or
+   follow KDP's barcode instructions. If using your own ISBN, check KDP's cover
+   template requirements before approval.
+
+KINDLE EBOOK
+1. Start a Kindle eBook title in KDP.
+2. Enter the same title and author details.
+3. Upload 03_Kindle_Manuscript.epub as the manuscript.
+4. Upload 04_Kindle_Cover_1600x2560.jpg as the cover.
+
+Before publishing, preview both editions in KDP Previewer and review the
+proof/print preview. Categories, keywords, pricing, territories and rights are
+selected by you in KDP; the suggested copy is in KDP_LISTING_DETAILS.txt.
