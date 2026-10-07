@@ -13,7 +13,7 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
-from cover_design import PANEL_DARK, front_cover
+from cover_design import AUTHOR_NAME, PANEL_DARK, front_cover
 
 PAGE_W, PAGE_H = letter                    # 612 x 792 pt
 WORDS = {8: "Eight", 12: "Twelve", 15: "Fifteen"}
@@ -92,6 +92,9 @@ def copyright_page(c, meta):
     c.setFillColor(INK)
     c.setFont("Head-Bold", 17)
     c.drawString(MARGIN, PAGE_H - MARGIN - 22, "Before we begin")
+    c.setFillColor(SOFT)
+    c.setFont("Head", 9.5)
+    c.drawString(MARGIN, PAGE_H - MARGIN - 42, f"By {AUTHOR_NAME}")
 
     text_w = PAGE_W - 2 * MARGIN
     y = PAGE_H - MARGIN - 58

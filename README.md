@@ -1,5 +1,7 @@
 # THE EX-FILES — KDP publishing pack
 
+**Author: Cesar Pedrin**
+
 **A Crossword Book for Men Who Are Absolutely Fine: 8 Adult Humour Puzzles About Your Ex**
 
 A ready-to-upload Amazon KDP puzzle book: 8 hand-built, fully verified crossword
@@ -8,25 +10,30 @@ key and comedy filler pages.
 
 ---
 
-## Direct download links
+## Download the complete KDP kit
 
-The repository is public, so these links download the finished files straight to
-your device. They are pinned to a commit, so they keep working even if the branch
-is cleaned up later.
+The single-file upload kit ZIP contains the four files KDP needs for the Kindle
+eBook and paperback, plus a short upload guide and copy-ready listing details.
 
-| What | Link |
+**KDP upload kit (ZIP):** [Open the ZIP's GitHub file page](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/blob/arena/f6bd7949-san-ysidro-waits/docs/THE_EX_FILES_Cesar_Pedrin_KDP_UPLOAD_KIT.zip) and
+choose **Download raw file**. If that download method is blocked, use the
+**GitHub source snapshot ZIP** link below; after unzipping it, open the
+`kdp_upload_kit/` folder (or its bundled ZIP in `docs/`).
+
+**Fallback — download a ZIP snapshot from GitHub:** [Download repository snapshot](https://codeload.github.com/pedrinloco74-afk/San-Ysidro-waits-/zip/refs/heads/arena%2Ff6bd7949-san-ysidro-waits)
+
+The files are also available individually:
+
+| What | GitHub file page |
 |---|---|
-| **Full book — PDF (25 pages)** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/6145e5231d444111404fd3da3f159d0cb1073139/docs/book.pdf](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/6145e5231d444111404fd3da3f159d0cb1073139/docs/book.pdf) |
-| **Kindle eBook — EPUB** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/6145e5231d444111404fd3da3f159d0cb1073139/ebook/THE_EX_FILES_kindle.epub](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/6145e5231d444111404fd3da3f159d0cb1073139/ebook/THE_EX_FILES_kindle.epub) |
-| **eBook cover — JPG 1600x2560** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/6145e5231d444111404fd3da3f159d0cb1073139/cover/The_Ex_Files_ebook_cover_1600x2560.jpg](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/6145e5231d444111404fd3da3f159d0cb1073139/cover/The_Ex_Files_ebook_cover_1600x2560.jpg) |
-| **Paperback cover — PDF wrap** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/6145e5231d444111404fd3da3f159d0cb1073139/cover/The_Ex_Files_paperback_wrap.pdf](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/6145e5231d444111404fd3da3f159d0cb1073139/cover/The_Ex_Files_paperback_wrap.pdf) |
+| **Paperback interior — PDF (25 pages)** | [Open the print interior](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/blob/arena/f6bd7949-san-ysidro-waits/The_Ex_Files_Crossword_Book_8.5x11_KDP.pdf) |
+| **Paperback full cover wrap — PDF** | [Open the paperback wrap](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/blob/arena/f6bd7949-san-ysidro-waits/cover/The_Ex_Files_paperback_wrap.pdf) |
+| **Kindle eBook manuscript — EPUB 3** | [Open the Kindle EPUB](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/blob/arena/f6bd7949-san-ysidro-waits/ebook/THE_EX_FILES_kindle.epub) |
+| **Kindle cover — JPG (1600 × 2560 px)** | [Open the Kindle cover image](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/blob/arena/f6bd7949-san-ysidro-waits/cover/The_Ex_Files_ebook_cover_1600x2560.jpg) |
 
-No GitHub account is needed. On a desktop the file downloads immediately; on
-GitHub's file page (not the raw link) use the **Download raw file** button.
-
-> Tip: a `raw` link served this way works in any browser. If you paste it into a
-> chat app it may get a preview card instead of downloading — that is normal, the
-> download button still works.
+No GitHub account is required. On each file page, choose **Download raw file**.
+The package is pinned to the build with Cesar Pedrin's author credit and the
+current eight-puzzle edition.
 
 ---
 
@@ -82,13 +89,15 @@ python tools/make_covers.py    # page count lives in PAGES at the top
 
 * **No bleed** is correct here — nothing runs to the edge.
 * **White paper** keeps the spine formula used above. If you switch to cream,
-  update `per_page` in `src/covers.py` (cream is thicker per page).
+  update `PER_PAGE_IN` in `tools/make_covers.py` (cream paper is thicker).
 
 ---
 
 ## Suggested KDP listing copy
 
 **Title:** The Ex-Files
+
+**Author:** Cesar Pedrin
 
 **Subtitle:** A Crossword Book for Men Who Are Absolutely Fine: 8 Adult Humour
 Puzzles About Your Ex
@@ -116,7 +125,7 @@ Puzzles About Your Ex
 > - Adult humour: drinking, swearing, and one clue about the rebound that lands
 >
 > A perfect gag gift for a friend who says he does not want to talk about it.
-> He will laugh. He will finish it. He will absolutely not mention puzzle eleven
+> He will laugh. He will finish it. He will absolutely not mention puzzle eight
 > to anybody.
 >
 > 18+ / adult humour. Not for children.
@@ -149,9 +158,9 @@ answers impossible:
 4. `tools/make_book.py` — builds 8 puzzles, then **verifies every entry**: it
    re-spells each answer from the actual grid letters and checks that every white
    cell belongs to a listed clue. It refuses to write a PDF if anything fails.
-5. `src/render.py` / `src/extras.py` / `src/covers.py` — the PDF interior, the
-   comedy pages, and the covers. `render.WARNINGS` catches any clue block that
-   would run off the page.
+5. `src/render.py` / `src/extras.py` / `src/cover_design.py` — the PDF interior,
+   the comedy pages, and the covers. `render.WARNINGS` catches any clue block
+   that would run off the page.
 
 Rebuild everything:
 
@@ -161,6 +170,7 @@ python tools/make_book.py      # 8 puzzles + verification + interior PDF
 python tools/make_epub.py      # Kindle EPUB (reads build/puzzles.json)
 python tools/make_covers.py    # ebook cover PDF+JPG, paperback wrap PDF
 python tools/check_cover.py    # text-collision + bounds check on both covers
+python tools/make_kdp_kit.py   # refresh docs/ downloads + KDP upload ZIP
 ```
 
 ### About the cover
@@ -177,7 +187,8 @@ grid, same answers — scaled to sit inside the trim with 1 in side margins. The
 interior has no bleed, so the artwork is set into the page as a framed plate
 rather than running off the edge. `src/render.py` calls the one routine in
 `src/cover_design.py`, so the paperback and the Kindle edition cannot show
-different covers.
+different covers. The cover and title page credit the author, Cesar Pedrin; the
+PDF metadata and EPUB creator metadata use the same name.
 
 `tools/make_epub.py` validates its own output: it checks the EPUB `mimetype` is
 stored first and uncompressed, parses every XML file, confirms every manifest and

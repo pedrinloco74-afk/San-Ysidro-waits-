@@ -2,12 +2,12 @@
 Cover design for THE EX-FILES.
 
 The cover shows the product: a real crossword grid from the book, filled in,
-with the funny breakup answers legible and two clue call-outs pointing at
-marquee words (UNSENT, WHISKEY, CLOSURE...). Everything is drawn as vectors so
+with the funny breakup answers legible and three clue call-outs pointing at
+marquee words (UNSENT, WHISKEY, CLOSURE). Everything is drawn as vectors so
 text stays razor sharp at any size and at KDP thumbnail scale.
 
-Grid data is generated deterministically from the book's own themed word bank,
-so the cover can never drift from the puzzles inside.
+The sparse cover grid is hand-placed from the book's own themed word bank,
+then checked for clashes and crossings so the cover cannot drift from the book.
 """
 
 from __future__ import annotations
@@ -45,6 +45,7 @@ COVER_POOL = {w: c for w, c in THEMED.items()
                                              "KEG", "NAG", "HUG"))}
 # The book this artwork belongs to. tools/make_book.py asserts these match the
 # puzzles it actually builds, so the cover can never advertise the wrong count.
+AUTHOR_NAME = "Cesar Pedrin"
 PUZZLE_COUNT = 8
 COUNT_WORD = "Eight"
 
@@ -265,7 +266,10 @@ def front_cover(c, w, h):
     sub_size = fit_one_line(subtitle, "Body", w * 0.042, inner)
     y -= asc("Body", sub_size)
     centred(subtitle, "Body", sub_size, y, LIGHT)
-    y -= desc("Body", sub_size) + h * 0.026
+    author_size = w * 0.029
+    y -= desc("Body", sub_size) + h * 0.004 + asc("Body", author_size)
+    centred(f"by {AUTHOR_NAME}", "Body", author_size, y, SOFT)
+    y -= desc("Body", author_size) + h * 0.008
 
     # ================= the clues, directly under the title =================
     callouts = []

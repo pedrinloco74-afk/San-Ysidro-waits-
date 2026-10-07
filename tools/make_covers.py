@@ -22,6 +22,7 @@ def ebook_cover_pdf(path, w=432, h=691.2):
     cd.register_fonts()
     c = canvas.Canvas(path, pagesize=(w, h), initialFontName="Body")
     c.setTitle("The Ex-Files - Kindle cover")
+    c.setAuthor(cd.AUTHOR_NAME)
     cd.front_cover(c, w, h)
     c.save()
 
@@ -36,6 +37,7 @@ def wrap_pdf(path):
 
     c = canvas.Canvas(path, pagesize=(total_w, total_h), initialFontName="Body")
     c.setTitle("The Ex-Files - paperback cover wrap")
+    c.setAuthor(cd.AUTHOR_NAME)
 
     # spine band first (drawn behind both panels)
     c.setFillColor(cd.PANEL_DARK)
@@ -74,11 +76,16 @@ def wrap_pdf(path):
 
 def jpg_from_pdf(pdf_path, jpg_path, width=1600):
     import pypdfium2 as pdfium
+    from PIL import Image
+
     doc = pdfium.PdfDocument(pdf_path)
     page = doc[0]
     img = page.render(scale=width / page.get_width()).to_pil()
+    target_h = round(width * page.get_height() / page.get_width())
+    if img.size != (width, target_h):
+        img = img.resize((width, target_h), Image.LANCZOS)
     img.convert("RGB").save(jpg_path, "JPEG", quality=94)
-    return img.size
+    return (width, target_h)
 
 
 if __name__ == "__main__":

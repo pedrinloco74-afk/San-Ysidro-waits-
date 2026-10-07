@@ -167,7 +167,7 @@ def main():
     c = canvas.Canvas(out_pdf, pagesize=(render.PAGE_W, render.PAGE_H),
                       initialFontName="Body")
     c.setTitle("The Ex-Files: A Crossword Book for Men Who Are Absolutely Fine")
-    c.setAuthor("The Ex-Files")
+    c.setAuthor(cover_design.AUTHOR_NAME)
     c.setSubject("Adult humour crossword puzzle book (8.5 x 11 in)")
 
     render.title_page(c, meta)

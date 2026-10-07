@@ -23,6 +23,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import sys
 import zipfile
 from datetime import datetime, timezone
@@ -32,6 +33,8 @@ from PIL import Image, ImageDraw, ImageFont
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(ROOT, "src"))
+
+from cover_design import AUTHOR_NAME
 
 FONT_DIR = "/usr/share/fonts/truetype/dejavu"
 INK = (27, 27, 29)
@@ -49,16 +52,9 @@ TITLES = {
     3: "Two A.M. Typing Lessons",
     4: "The Group Chat Is Typing...",
     5: "She Took the Dog",
-    6: "Certified Absolutely Fine",
-    7: "The Rebound Rules",
-    8: "Blocked, Unblocked, Blocked",
-    9: "Sunday Scaries, Extra Large",
-    10: "The Playlist You Must Delete",
-    11: "Closure (Not Included)",
-    12: "Moving Out, Sort Of",
-    13: "One (1) Unsent Text",
-    14: "Her Mom Still Likes You",
-    15: "The Dog Is Fine, by the Way",
+    6: "Blocked, Unblocked, Blocked",
+    7: "Closure (Not Included)",
+    8: "The Dog Is Fine, by the Way",
 }
 
 
@@ -202,7 +198,7 @@ def puzzle_xhtml(pz):
     down = sorted((e for e in pz["entries"] if e["dir"] == "D"),
                   key=lambda e: e["num"])
     body = f"""<section epub:type="chapter">
-<p class="kicker">Puzzle {pz['index']} of 15</p>
+<p class="kicker">Puzzle {pz['index']} of {len(puzzles)}</p>
 <h1>Puzzle {pz['index']}: {esc(pz['title'])}</h1>
 <div class="gridbox">
 <img src="../images/puzzle{pz['index']:02d}.png" alt="Crossword grid for puzzle {pz['index']}"/></div>
@@ -249,11 +245,12 @@ def front_matter():
 </html>
 """
 
-    pages["title"] = page("The Ex-Files", """<section epub:type="titlepage">
+    pages["title"] = page("The Ex-Files", f"""<section epub:type="titlepage">
 <div class="center">
 <p class="kicker">The</p>
 <h1 style="page-break-before:auto; font-size:2.3em;">EX-FILES</h1>
 <p class="accent">A Crossword Book for Men Who Are Absolutely Fine</p>
+<p class="center">By {esc(AUTHOR_NAME)}</p>
 </div>
 <hr/>
 <p class="center">Eight puzzles. One ex-girlfriend. Zero closure.</p>
@@ -426,6 +423,10 @@ def build_epub(data_path, cover_jpg, out_path):
     puzzles = data["puzzles"]
 
     work = os.path.join(ROOT, "build", "epub_src")
+    # A previous, longer edition may have left unused XHTML/images here. Start
+    # clean so the ZIP contains only files from this exact puzzle count.
+    if os.path.isdir(work):
+        shutil.rmtree(work)
     os.makedirs(os.path.join(work, "images"), exist_ok=True)
     os.makedirs(os.path.join(work, "text"), exist_ok=True)
 
@@ -442,7 +443,6 @@ def build_epub(data_path, cover_jpg, out_path):
         grid_image(pz, letters, a)
         img_sizes[f"puzzle{pz['index']:02d}"] = os.path.getsize(p)
         img_sizes[f"answer{pz['index']:02d}"] = os.path.getsize(a)
-    import shutil
     shutil.copyfile(cover_jpg, os.path.join(work, "images", "cover.jpg"))
 
     # ---- xhtml ----
@@ -589,8 +589,9 @@ def build_epub(data_path, cover_jpg, out_path):
 <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
 <dc:identifier id="bookid">urn:uuid:{uuid_for(puzzles)}</dc:identifier>
 <dc:title>The Ex-Files</dc:title>
-<dc:title id="sub">A Crossword Book for Men Who Are Absolutely Fine: 15 Adult Humour Puzzles About Your Ex</dc:title>
-<dc:creator>Anonymous</dc:creator>
+<dc:title id="sub">A Crossword Book for Men Who Are Absolutely Fine: {len(puzzles)} Adult Humour Puzzles About Your Ex</dc:title>
+<dc:creator id="creator">{esc(AUTHOR_NAME)}</dc:creator>
+<meta refines="#creator" property="role" scheme="marc:relators">aut</meta>
 <dc:language>en</dc:language>
 <dc:rights>Copyright &#169; 2026. All rights reserved.</dc:rights>
 <dc:subject>Humor</dc:subject>
@@ -684,6 +685,19 @@ def validate(epub_path):
                 problems.append(f"XML error in {n}: {e}")
 
         opf = z.read("content.opf").decode()
+        if f"<dc:creator id=\"creator\">{esc(AUTHOR_NAME)}</dc:creator>" not in opf:
+            problems.append("EPUB creator metadata is missing the author name")
+        expected_grid_images = {
+            f"images/{kind}{i:02d}.png"
+            for i in range(1, len(puzzles) + 1)
+            for kind in ("puzzle", "answer")
+        }
+        actual_grid_images = {
+            n for n in names
+            if re.fullmatch(r"images/(?:puzzle|answer)\d+\.png", n)
+        }
+        if actual_grid_images != expected_grid_images:
+            problems.append("grid image set does not match the current puzzle count")
         hrefs = re.findall(r'href="([^"]+)"', opf)
         for h in hrefs:
             if h not in names:
@@ -715,9 +729,14 @@ def validate(epub_path):
 
     # ---- content completeness: every clue and every answer must be present ----
     with zipfile.ZipFile(epub_path) as z:
+        title_page = z.read("text/title.xhtml").decode()
+        if f"By {esc(AUTHOR_NAME)}" not in title_page:
+            problems.append("title page is missing the author byline")
         for pz in puzzles:
             n = pz["index"]
             body = z.read(f"text/puzzle{n:02d}.xhtml").decode()
+            if f"Puzzle {n} of {len(puzzles)}" not in body:
+                problems.append(f"puzzle {n}: displayed puzzle count is wrong")
             clues = re.findall(r'<p class="clue">(.*?)</p>', body, re.S)
             if len(clues) != len(pz["entries"]):
                 problems.append(f"puzzle {n}: {len(clues)} clues printed for "
