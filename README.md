@@ -16,10 +16,10 @@ is cleaned up later.
 
 | What | Link |
 |---|---|
-| **Full book — PDF (25 pages)** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/5532e7c5d92f5646275c7b33db80984d71f3c970/docs/book.pdf](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/5532e7c5d92f5646275c7b33db80984d71f3c970/docs/book.pdf) |
-| **Kindle eBook — EPUB** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/5532e7c5d92f5646275c7b33db80984d71f3c970/ebook/THE_EX_FILES_kindle.epub](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/5532e7c5d92f5646275c7b33db80984d71f3c970/ebook/THE_EX_FILES_kindle.epub) |
-| **eBook cover — JPG 1600x2560** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/5532e7c5d92f5646275c7b33db80984d71f3c970/cover/The_Ex_Files_ebook_cover_1600x2560.jpg](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/5532e7c5d92f5646275c7b33db80984d71f3c970/cover/The_Ex_Files_ebook_cover_1600x2560.jpg) |
-| **Paperback cover — PDF wrap** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/5532e7c5d92f5646275c7b33db80984d71f3c970/cover/The_Ex_Files_paperback_wrap.pdf](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/5532e7c5d92f5646275c7b33db80984d71f3c970/cover/The_Ex_Files_paperback_wrap.pdf) |
+| **Full book — PDF (25 pages)** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/6145e5231d444111404fd3da3f159d0cb1073139/docs/book.pdf](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/6145e5231d444111404fd3da3f159d0cb1073139/docs/book.pdf) |
+| **Kindle eBook — EPUB** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/6145e5231d444111404fd3da3f159d0cb1073139/ebook/THE_EX_FILES_kindle.epub](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/6145e5231d444111404fd3da3f159d0cb1073139/ebook/THE_EX_FILES_kindle.epub) |
+| **eBook cover — JPG 1600x2560** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/6145e5231d444111404fd3da3f159d0cb1073139/cover/The_Ex_Files_ebook_cover_1600x2560.jpg](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/6145e5231d444111404fd3da3f159d0cb1073139/cover/The_Ex_Files_ebook_cover_1600x2560.jpg) |
+| **Paperback cover — PDF wrap** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/6145e5231d444111404fd3da3f159d0cb1073139/cover/The_Ex_Files_paperback_wrap.pdf](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/6145e5231d444111404fd3da3f159d0cb1073139/cover/The_Ex_Files_paperback_wrap.pdf) |
 
 No GitHub account is needed. On a desktop the file downloads immediately; on
 GitHub's file page (not the raw link) use the **Download raw file** button.
