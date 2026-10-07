@@ -13,7 +13,7 @@ from reportlab.pdfgen import canvas                   # noqa: E402
 
 import cover_design as cd                             # noqa: E402
 
-PAGES = 29
+PAGES = 25
 PER_PAGE_IN = 0.002252          # white paper, inches per page
 
 

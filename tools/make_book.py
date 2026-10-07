@@ -14,6 +14,7 @@ from crossword import number_slots                 # noqa: E402
 from weave import Bank, weave, to_grid, number_entries  # noqa: E402
 from reportlab.pdfgen import canvas                # noqa: E402
 import render                                      # noqa: E402
+import cover_design                                # noqa: E402
 import extras                                      # noqa: E402
 
 TITLES = [
@@ -22,19 +23,17 @@ TITLES = [
     ("Two A.M. Typing Lessons", "drafts you never sent"),
     ("The Group Chat Is Typing...", "the official position"),
     ("She Took the Dog", "custody, disputed"),
-    ("Certified Absolutely Fine", "per your own statement"),
-    ("The Rebound Rules", "a policy document"),
     ("Blocked, Unblocked, Blocked", "a timeline"),
-    ("Sunday Scaries, Extra Large", "weekends, unstructured"),
-    ("The Playlist You Must Delete", "songs, weaponised"),
     ("Closure (Not Included)", "what you cannot buy"),
-    ("Moving Out, Sort Of", "boxes, half packed"),
-    ("One (1) Unsent Text", "drafts, revisited"),
-    ("Her Mom Still Likes You", "a trap, obviously"),
     ("The Dog Is Fine, By the Way", "final statement"),
 ]
 
-SIZES = [15, 14, 16, 13, 15, 14, 16, 13, 15, 16, 14, 15, 15, 14, 16]
+# Eight puzzles, one per page, with a full answer page for each. Below 24 pages
+# Amazon will not print a paperback at all, so the answer key is presented one
+# puzzle per page rather than three - that keeps the book inside KDP's limits
+# without padding it out.
+
+SIZES = [15, 14, 16, 13, 15, 13, 14, 16]
 
 
 def build_bank():
@@ -158,6 +157,10 @@ def main():
         return 1
 
     out_pdf = os.path.join(ROOT, "The_Ex_Files_Crossword_Book_8.5x11_KDP.pdf")
+    if cover_design.PUZZLE_COUNT != len(puzzles):
+        print(f"!! cover advertises {cover_design.PUZZLE_COUNT} puzzles, "
+              f"this build has {len(puzzles)}")
+        return 1
     meta = {"puzzle_count": len(puzzles)}
 
     render.register_fonts()
@@ -226,7 +229,8 @@ def main():
 
     extras.scorecard(
         c, "self assessment", "The Scorecard",
-        ["Fill this in after puzzle 15. Numbers do not lie, and yours are hilarious."],
+        [f"Fill this in after puzzle {len(puzzles)}. Numbers do not lie, and yours "
+         "are hilarious."],
         [
             ("Hours spent thinking about her", "Estimated. Add ten percent for shower time."),
             ("Texts sent to her", "Across any and all apps, including the one you deleted"),
@@ -250,8 +254,8 @@ def main():
         ["Every answer, every grid, no judgement.", "",
          "Try not to arrive here before the first hour is up."])
 
-    for i in range(0, len(puzzles), 3):
-        render.answer_page(c, puzzles[i:i + 3], page_no=i // 3 + 1, meta=meta)
+    for i, pz in enumerate(puzzles):
+        render.answer_page(c, [pz], page_no=i + 1, meta=meta)
 
     render.back_page(c, meta)
     c.save()

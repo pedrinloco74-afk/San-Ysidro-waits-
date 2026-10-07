@@ -43,10 +43,26 @@ COVER_POOL = {w: c for w, c in THEMED.items()
                                        w in ("DOG", "SAD", "GYM", "BAR", "MAD",
                                              "SOB", "DUO", "INK", "SEX", "ALE",
                                              "KEG", "NAG", "HUG"))}
-COVER_SIZE = 10
-COVER_SEED = 22
+# The book this artwork belongs to. tools/make_book.py asserts these match the
+# puzzles it actually builds, so the cover can never advertise the wrong count.
+PUZZLE_COUNT = 8
+COUNT_WORD = "Eight"
 
-MARQUEE = ["UNSENT", "WHISKEY", "CLOSURE", "DIVORCE", "SWIPED", "DUMPED"]
+# The cover crossword is deliberately sparse: six words, hand-placed. Fewer,
+# bigger words read far better at the size Amazon shows in search results than a
+# dense grid, and every one is a real entry from the book's own themed bank.
+# (word, direction, row, column) - the crossings are verified below.
+COVER_WORDS = [
+    ("CLOSURE", "A", 3, 0),
+    ("WHISKEY", "D", 0, 3),
+    ("GHOSTED", "A", 1, 2),
+    ("DUMPED", "D", 1, 8),
+    ("UNSENT", "A", 5, 0),
+    ("MAD", "A", 6, 6),
+]
+
+# red words on the cover: exactly the three the clue call-outs name
+MARQUEE = ["UNSENT", "WHISKEY", "CLOSURE"]
 
 # the three call-outs on the front cover, taken verbatim from the clue bank
 CLUE_TEXT = {
@@ -57,21 +73,33 @@ CLUE_TEXT = {
 
 
 def cover_grid():
-    """Deterministic crossword for the cover artwork."""
-    bank = Bank(COVER_POOL, set(COVER_POOL))
-    result = weave(bank, COVER_SIZE, random.Random(COVER_SEED),
-                   target_words=18, theme_quota=99)
-    if result is None:
-        raise RuntimeError("cover grid failed to build")
-    letters, placed, _checked = result
-    grid, shift = to_grid(letters)
+    """The cover crossword: hand-placed, six words, every crossing checked."""
+    letters = {}
     entries = []
-    for p in placed:
-        entries.append({
-            "word": p.word,
-            "dir": p.d,
-            "cells": [(r - shift[0], c - shift[1]) for r, c in p.cells],
-        })
+    for word, d, r0, c0 in COVER_WORDS:
+        if word not in COVER_POOL:
+            raise RuntimeError(f"cover word {word} is not a big book entry")
+        cells = []
+        for i, ch in enumerate(word):
+            rc = (r0 + i, c0) if d == "D" else (r0, c0 + i)
+            if letters.get(rc, ch) != ch:
+                raise RuntimeError(f"cover grid clashes at {rc} ({word})")
+            letters[rc] = ch
+            cells.append(rc)
+        entries.append({"word": word, "dir": d, "cells": cells})
+
+    # every word must cross at least one other, or the artwork shows an island
+    # that no solver would accept as a crossword
+    shared = {}
+    for e in entries:
+        for rc in e["cells"]:
+            shared[rc] = shared.get(rc, 0) + 1
+    if any(all(shared[rc] < 2 for rc in e["cells"]) for e in entries):
+        raise RuntimeError("cover grid has an uncrossed word")
+
+    grid, shift = to_grid(letters)
+    for e in entries:
+        e["cells"] = [(r - shift[0], c - shift[1]) for r, c in e["cells"]]
     return grid, letters, shift, entries
 
 
@@ -172,11 +200,13 @@ def pick_numbers(entries):
 # front cover artwork
 # ---------------------------------------------------------------------------
 def front_cover(c, w, h):
-    """Front cover: the crossword is the hero.
+    """Front cover: the clues sit up top, the crossword anchors the bottom.
 
-    The tagline sits *under* the grid and the clue call-outs are one line each,
-    which frees the middle of the page so the grid renders at close to full
-    width. Every position comes from real glyph metrics, so nothing can collide.
+    The wordmark, the clue call-outs, the tagline and the badges stack in the
+    upper half; the filled grid takes the bottom. Six words only, hand-placed
+    (see COVER_WORDS), so the artwork stays bold and legible at the size Amazon
+    shows in search results. Every position comes from real glyph metrics, so
+    nothing can collide.
     """
     c.setFillColor(PANEL_DARK)
     c.rect(0, 0, w, h, stroke=0, fill=1)
@@ -208,7 +238,7 @@ def front_cover(c, w, h):
             size -= 0.25
         return size
 
-    # ================= top block =================
+    # ================= top block: the wordmark =================
     y = h - h * 0.048
 
     the_size = min(w * 0.030, inner / 8.0)
@@ -235,7 +265,40 @@ def front_cover(c, w, h):
     sub_size = fit_one_line(subtitle, "Body", w * 0.042, inner)
     y -= asc("Body", sub_size)
     centred(subtitle, "Body", sub_size, y, LIGHT)
-    y -= desc("Body", sub_size) + h * 0.012
+    y -= desc("Body", sub_size) + h * 0.026
+
+    # ================= the clues, directly under the title =================
+    callouts = []
+    for word in ("UNSENT", "WHISKEY", "CLOSURE"):
+        for e in entries:
+            if e["word"] == word:
+                callouts.append((e, CLUE_TEXT[word]))
+                break
+    labels = [f"{e['dir']}  {e['word']}   " for e, _ in callouts]
+
+    call_size = min(w * 0.0335, inner / 22.0)
+    while call_size > 7 and any(
+            pdfmetrics.stringWidth(lb, "Mono-Bold", call_size)
+            + pdfmetrics.stringWidth(tx, "Body", call_size)
+            > inner - call_size * 1.10
+            for lb, (_e, tx) in zip(labels, callouts)):
+        call_size -= 0.25
+    call_lead = call_size * 1.85
+    box = call_size * 0.62
+
+    for (e, text), label in zip(callouts, labels):
+        y -= asc("Mono-Bold", call_size)
+        c.setFillColor(ACCENT)
+        c.rect(m, y + call_size * 0.14, box, box, stroke=0, fill=1)
+        c.setFont("Mono-Bold", call_size)
+        c.setFillColor(ACCENT)
+        c.drawString(m + box * 1.7, y, label)
+        kw = pdfmetrics.stringWidth(label, "Mono-Bold", call_size)
+        c.setFillColor(LIGHT)
+        c.setFont("Body", call_size)
+        # shift the serif clue text a touch so its baseline matches the mono label
+        c.drawString(m + box * 1.7 + kw, y - call_size * 0.06, text)
+        y -= call_lead
 
     top_block_bottom = y - h * 0.010
 
@@ -243,28 +306,16 @@ def front_cover(c, w, h):
     foot_size = w * 0.030
     footer_baseline = h * 0.030
 
-    badges = ["15 PUZZLES", "FULL ANSWER KEY", "18+ ADULT HUMOUR"]
+    # the grid sits at the bottom, above the one-line caption
+    grid_bottom = footer_baseline + asc("Body", foot_size) + h * 0.024
+
+    badges = [f"{COUNT_WORD.upper()} PUZZLES", "FULL ANSWER KEY", "18+ ADULT HUMOUR"]
     gap = w * 0.009
     bw = (inner - 2 * gap) / 3
     bh = h * 0.029
     badge_size = min(h * 0.0126, bw / 11.5)
-    badge_bottom = footer_baseline + asc("Body", foot_size) * 0.5 + h * 0.016
 
-    callouts = []
-    for word in ("UNSENT", "WHISKEY", "CLOSURE"):
-        for e in entries:
-            if e["word"] == word:
-                callouts.append((e, CLUE_TEXT[word]))
-                break
-
-    call_size = min(w * 0.0305, inner / 24.0)
-    call_lead = call_size * 1.55
-    call_bottom = badge_bottom + bh + h * 0.020
-    call_top = call_bottom + call_lead * len(callouts)
-
-    # tagline sits between the grid and the call-outs: build it bottom-up so the
-    # block occupies exactly [tag_bottom, tag_top] and cannot reach the call-outs
-    tag_lines = ["Fifteen puzzles about her, the dog, and the group chat",
+    tag_lines = [f"{COUNT_WORD} puzzles about her, the dog, and the group chat",
                  "that held you together."]
     tag_size = w * 0.0355
     while tag_size > w * 0.022 and any(
@@ -273,63 +324,46 @@ def front_cover(c, w, h):
         tag_size -= 0.25
     tag_lead = tag_size * 1.34
     tag_asc = asc("Body-Bold", tag_size)
-    tag_desc = desc("Body-Bold", tag_size)
-    tag_block = tag_asc + tag_lead * (len(tag_lines) - 1) + tag_desc
-    tag_bottom = call_top + h * 0.034
-    tag_top = tag_bottom + tag_block
+    tag_block = tag_asc + tag_lead * (len(tag_lines) - 1) + desc("Body-Bold", tag_size)
 
-    # ================= the grid fills the remaining band =================
-    card_pad = w * 0.017
-    band_top = top_block_bottom
-    band_bottom = tag_top + h * 0.016
-    cell = min(inner / cols, (band_top - band_bottom - 2 * card_pad) / rows)
-    if cell * rows + 2 * card_pad > band_top - band_bottom:
-        raise RuntimeError("cover grid does not fit its band")
+    fixed = (h * 0.026            # gap under the clues
+             + tag_block          # the tagline
+             + h * 0.024          # tagline -> badges
+             + bh                 # the badge row
+             + h * 0.026)         # badges -> grid
+    cell = min(inner / cols, (top_block_bottom - grid_bottom - fixed) / rows)
+    if cell <= 6:
+        raise RuntimeError("cover grid has no room")
     gw = cell * cols
     gx = cx - gw / 2
-    card_h = cell * rows + 2 * card_pad
-    card_top = band_top
-    grid_top = card_top - card_pad
+    grid_top = grid_bottom + rows * cell
 
+    badge_bottom = grid_top + h * 0.026
+    # the tagline sits *above* the badge row: give it the gap, then its own height
+    tag_top = badge_bottom + bh + h * 0.024 + tag_block
+
+    # ================= the grid =================
+    card_pad = w * 0.017
     c.setFillColor(HexColor("#f7f7f8"))
-    c.rect(gx - card_pad, card_top - card_h, gw + 2 * card_pad, card_h,
-           stroke=0, fill=1)
+    c.rect(gx - card_pad, grid_bottom - card_pad, gw + 2 * card_pad,
+           rows * cell + 2 * card_pad, stroke=0, fill=1)
 
     highlight = set()
     for e in entries:
-        if e["word"] in ("UNSENT", "WHISKEY", "CLOSURE", "DIVORCE", "SWIPED",
-                         "DUMPED"):
+        if e["word"] in MARQUEE:
             highlight.update(e["cells"])
 
     draw_grid(c, gx, grid_top, cell, grid, letters, shift, highlight,
               pick_numbers(entries))
 
-    # ================= tagline under the grid =================
+    # ================= tagline above the badges =================
     ty = tag_top
     for text in tag_lines:
         ty -= tag_asc
         centred(text, "Body-Bold", tag_size, ty, ACCENT)
         ty -= tag_lead
 
-    # ================= clue call-outs, one line each =================
-    box = w * 0.019
-    cy = call_top
-    for e, text in callouts:
-        cy -= asc("Mono-Bold", call_size)
-        c.setFillColor(ACCENT)
-        c.rect(m, cy + call_size * 0.14, box, box, stroke=0, fill=1)
-        key = f"{e['dir']}  {e['word']}   "
-        c.setFillColor(ACCENT)
-        c.setFont("Mono-Bold", call_size)
-        c.drawString(m + box * 1.7, cy, key)
-        kw = pdfmetrics.stringWidth(key, "Mono-Bold", call_size)
-        c.setFillColor(LIGHT)
-        c.setFont("Body", call_size)
-        # shift the serif clue text a touch so its baseline matches the mono label
-        c.drawString(m + box * 1.7 + kw, cy - call_size * 0.06, text)
-        cy -= call_lead
-
-    # ================= badges and footer =================
+    # ================= badges =================
     bx = m
     for b in badges:
         c.setStrokeColor(ACCENT_DEEP)
@@ -343,15 +377,13 @@ def front_cover(c, w, h):
                      b)
         bx += bw + gap
 
+    # ================= caption under the grid =================
     c.setFillColor(SOFT)
     c.setFont("Body", foot_size)
     c.drawCentredString(cx, footer_baseline,
                         "The gift for the man who says he is fine.")
 
 
-# ---------------------------------------------------------------------------
-# back cover artwork
-# ---------------------------------------------------------------------------
 def back_cover(c, w, h):
     """Back cover. Every line is width-fitted to the trim, because a line that
     overflows spills across the spine onto the front cover when the wrap is
@@ -360,7 +392,7 @@ def back_cover(c, w, h):
         ("body", "He says he is fine. He is not fine, and you both know it,"),
         ("body", "so do not ask him again \u2014 hand him this instead."),
         ("gap", ""),
-        ("body", "Fifteen original crossword puzzles built out of the only"),
+        ("body", "Eight original crossword puzzles built out of the only"),
         ("body", "thing a man actually wants to talk about after a breakup:"),
         ("body", "her, the dog, the group chat, and the playlist he has been"),
         ("body", "told twice to delete."),
@@ -378,7 +410,7 @@ def back_cover(c, w, h):
         ("body", "not fill in honestly."),
         ("gap", ""),
         ("body", "No advice. No journaling prompts. Just proper crosswords,"),
-        ("body", "fifteen of them, with a full answer key and jokes between"),
+        ("body", "eight of them, with a full answer key and jokes between"),
         ("body", "the puzzles."),
     ]
 
@@ -438,7 +470,7 @@ def back_cover(c, w, h):
 
     # ---- footer: both lines shrunk until they fit the trim exactly ----
     y -= body * 0.90
-    line1 = "15 PUZZLES  |  FULL ANSWER KEY  |  8.5 x 11 LARGE PRINT"
+    line1 = f"{COUNT_WORD.upper()} PUZZLES  |  FULL ANSWER KEY  |  8.5 x 11 LARGE PRINT"
     line2 = "ADULT HUMOUR \u00b7 NOT FOR CHILDREN \u00b7 FOR MEN WHO ARE ABSOLUTELY FINE"
     s1 = w * 0.032
     while s1 > 6 and pdfmetrics.stringWidth(line1, "Head-Bold", s1) > limit:

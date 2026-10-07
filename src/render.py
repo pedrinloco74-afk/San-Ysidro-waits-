@@ -16,7 +16,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from cover_design import PANEL_DARK, front_cover
 
 PAGE_W, PAGE_H = letter                    # 612 x 792 pt
-WORDS = {12: "Twelve", 15: "Fifteen"}
+WORDS = {8: "Eight", 12: "Twelve", 15: "Fifteen"}
 MARGIN = 0.55 * 72
 FONT_DIR = "/usr/share/fonts/truetype/dejavu"
 
@@ -443,11 +443,15 @@ def answer_page(c, puzzles, page_no, meta):
                      f"PUZZLE {pz['index']}  —  {pz['title']}")
         rows, cols = len(pz["grid"]), len(pz["grid"][0])
         avail_h = slot - 20
-        avail_w = 4.6 * 72
+        # a lone answer gets the full page width, so the grid is big
+        # enough to actually read
+        avail_w = (7.1 if len(puzzles) == 1 else 4.6) * 72
         cell, gw, gh = _grid_metrics_in(rows, cols, avail_w, avail_h)
         letters = {(int(k.split(",")[0]), int(k.split(",")[1])): v
                    for k, v in pz["answer"].items()}
-        _grid_at(c, pz, (PAGE_W - gw) / 2, slot_top - 16, cell, letters)
+        # centre the grid in whatever room it has
+        top = slot_top - 16 - max(0.0, (avail_h - gh) / 2)
+        _grid_at(c, pz, (PAGE_W - gw) / 2, top, cell, letters)
     c.setFillColor(SOFT)
     c.setFont("Head", 8.5)
     c.drawCentredString(PAGE_W / 2, MARGIN - 2, str(page_no))

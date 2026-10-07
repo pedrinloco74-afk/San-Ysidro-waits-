@@ -256,12 +256,12 @@ def front_matter():
 <p class="accent">A Crossword Book for Men Who Are Absolutely Fine</p>
 </div>
 <hr/>
-<p class="center">Fifteen puzzles. One ex-girlfriend. Zero closure.</p>
+<p class="center">Eight puzzles. One ex-girlfriend. Zero closure.</p>
 <p class="center">Somewhere in here are the things you said out loud at two in the
 morning, written down as clues so you can finally get them out of your system.</p>
 <p class="center accent">You are not sad. You are themed.</p>
 <hr/>
-<p class="note center">15 puzzles &#183; full answer key &#183; adult humour (18+)</p>
+<p class="note center">8 puzzles &#183; full answer key &#183; adult humour (18+)</p>
 <p class="note center">This eBook edition gives you every grid as a high-resolution
 image, so you can zoom in on Kindle and write nothing down at all. The print
 edition has the tick-boxes, the scorecard and room for your handwriting.</p>
@@ -292,7 +292,7 @@ her, him, the dog, the group chat, and your ongoing recovery.</p>
 and Down lists printed under each grid. Tap or pinch a grid on your Kindle to see
 the squares up close.</p>
 <p>Stuck? Every answer is in the back. Try not to go there in the first hour.</p>
-<p>If you finish all fifteen puzzles, you have officially processed the breakup
+<p>If you finish all eight puzzles, you have officially processed the breakup
 and may now talk about something else at parties.</p>
 <hr/>
 <p class="note">All contents copyright &#169; 2026. All rights reserved. No part of
@@ -385,7 +385,7 @@ have to be honest with yourself, which is worse.</p>
         f'&#8212; ______ / ______</p>' for a, b in scorecard)
     pages["scorecard"] = page("The Scorecard", f"""<section epub:type="chapter">
 <h1>The Scorecard</h1>
-<p class="note">Fill this in after puzzle 15. Numbers do not lie, and yours are
+<p class="note">Fill this in after puzzle 8. Numbers do not lie, and yours are
 hilarious. (On Kindle you can scribble these onto your own phone. Nobody is
 watching.)</p>
 {rows}
@@ -396,7 +396,7 @@ book.</p>
 
     pages["back"] = page("One last thing", """<section epub:type="chapter">
 <h1>One last thing</h1>
-<p>Fifteen puzzles. You did them. You are, statistically, fine now.</p>
+<p>Eight puzzles. You did them. You are, statistically, fine now.</p>
 <p>Somewhere around puzzle four you stopped thinking about her and started
 thinking about a four-letter word for the guy she told you not to worry about.
 That is growth. That is practically a hobby.</p>
@@ -596,7 +596,7 @@ def build_epub(data_path, cover_jpg, out_path):
 <dc:subject>Humor</dc:subject>
 <dc:subject>Games &amp; Activities</dc:subject>
 <dc:subject>Crosswords</dc:subject>
-<dc:description>Fifteen original adult-humour crossword puzzles about your ex-girlfriend, the group chat that holds you upright, and the dog you still refer to as ours. Full answer key included. 18+</dc:description>
+<dc:description>Eight original adult-humour crossword puzzles about your ex-girlfriend, the group chat that holds you upright, and the dog you still refer to as ours. Full answer key included. 18+</dc:description>
 <meta property="dcterms:modified">{modified}</meta>
 <meta name="cover" content="cover-image"/>
 <meta property="schema:accessMode">textual</meta>
