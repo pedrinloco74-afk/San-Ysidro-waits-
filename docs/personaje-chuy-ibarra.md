@@ -17,7 +17,7 @@
 | **Idioma** | Spanglish. Cambia de idioma a mitad de frase según la emoción |
 | **Mascota** | *Semáforo*, un xoloitzcuintle flaco que solo ladra en rojo |
 | **Trabajo** | Se encarga de "la línea" (la fila peatonal): cuida lugares, cuenta horas, vende mangos con chile en vaso |
-| **Atributo mágico** | El Cronómetro: sabe cuánto va a tardar cualquier fila solo con oler el aire |
+| **Atributo mágico** | Le dicen "el Cronómetro": sabe cuánto va a tardar cualquier fila solo con oler el aire. No carga ningún aparato — el reloj es él |
 | **Debilidad** | No aguanta estar quieto. Y los formularios. Los formularios lo aterran |
 
 ---
@@ -44,8 +44,9 @@ Warm comedy with a dash of fantasy. Poverty is never the punchline; *waiting* is
 - Tenis de caña alta, uno con el cordón desamarrado (nunca se amarra: "si me amarro, me detengo").
 - calcetines con estampado de perrito xolo.
 - **Al cuello: el rosario de su abuela.** Cuenta de madera oscura, crucifijo de plata chiquito, medallita de la Virgen. No lo reza, lo *acaricia* cuando está nervioso (y lo encuentra en el bolsillo derecho sin meter la mano, siempre). Es lo único que no puede perder, y lo intenta perder tres veces en la temporada.
-- **En la muñeca: la pulsera del hospital.** La banda de papel de recién nacido del hospital de San Ysidro donde nació, desteñida por el sol y asegurada con un hilo. Nadie en la familia sabe por qué la trae; él tampoco lo sabe explicar. **Esta es la declaración de doble ciudadanía del personaje** — dos pasaportes colgando del cuello era un panfleto; una pulsera de hospital que un niño de once años no se quita es una historia.
-- **El cronómetro ya no cuelga del cuello:** vive en el bolsillo del cargo, asomando con un cordel. Así puede correr sin que le pegue en la cara.
+- **Manos y muñecas desnudas. Cero relojes, cero pulseras, cero cronómetros.** El reloj estaba en el cuello, se movió al bolsillo, y ahora se fue del diseño. **Qué ganamos con eso:** el único objeto tocando su piel es el rosario de su abuela, así que la silueta dice "fe heredada" y no "quiosco de souvenirs fronterizo". Y un niño que se mueve sin cargar nada es un niño que nunca tiene que abrir la bolsa de los papeles frente a nadie.
+- **Dónde se fue la doble ciudadanía:** ya no la lleva puesta, la guarda. Vive en la **lata de café** sobre el refrigerador de Doña Cuquita, con los dos pasaportes adentro, el acta de nacimiento de California y una foto desteñida. Nadie necesita verla para saber que está ahí. Regla de la serie: **la ciudadanía de Chuy nunca entra en cuadro, siempre se menciona** — se nombra en diálogo, nunca se decora.
+- El **Cronómetro** sobrevive como apodo de su ojo, no como artefacto: la gente del barrio le dice "el Cronómetro" a Chuy porque nunca se equivoca con las horas. Verde = avanza. Rojo = corre.
 - Sonrisa grande, cejas expresivas, cero sombrero, cero poncho, cero cliché de caricatura. Su cultura está en lo que dice, hace y repara — no en el vestuario folclórico.
 - **Regla de props:** nunca dibujar documentos, pasaportes ni papeles oficiales en la mano de un personaje. La ciudadanía se cuenta con objetos, no con papeleo.
 
@@ -90,7 +91,7 @@ Warm comedy with a dash of fantasy. Poverty is never the punchline; *waiting* is
 
 ## 6. Poderes y reglas / Powers & rules
 
-- **El Cronómetro**: al oler el aire, Chuy sabe cuánto tardará cualquier fila. Verde = avanza. Rojo = corre.
+- **"El Cronómetro"**: apodo, no aparato. Al oler el aire, Chuy sabe cuánto tardará cualquier fila. Verde = avanza. Rojo = corre. No existe reloj, pulsera ni gadget en su diseño: el poder vive en su nariz y en su memoria, no en un objeto que alguien le pueda quitar en una revisión.
 - **Spanglish Boost**: cuando cambia de idioma a mitad de frase, se mueve el doble de rápido. Si lo dice todo en un solo idioma, es lento. (Metáfora del personaje, sí, y también su motor de comedia.)
 - **Regla dura / Limitation**: **no puede acortar la línea, solo hacerla llevadera.** Cada vez que intenta saltársela, DON ESPERA se hace más grande. Lección recurrente de la serie.
 - **Precios / Cost**: usar el Cronómetro le cuesta un suspiro. Cuando se queda sin suspiros, no puede cruzar hasta que alguien lo haga reír.
@@ -119,13 +120,14 @@ Warm comedy with a dash of fantasy. Poverty is never the punchline; *waiting* is
 
 ## 9. Archivos / Files
 
-- `assets/chuy-ibarra.png` — pose heroica de Chuy: gorra con monograma **TJ**, rosario al cuello, pulsera del hospital en la muñeca, cronómetro asomando del bolsillo. Tenis sin marca registrada (a propósito).
+- `assets/chuy-ibarra.png` — pose heroica de Chuy: gorra con monograma **TJ**, rosario al cuello, muñecas desnudas, bolsillos vacíos. Tenis sin marca registrada (a propósito). Sin relojes ni pasaportes a la vista.
 - `assets/dona-cuquita-semaforo.png` — hoja de elenco: Doña Cuquita (cuchara de madera, rebozo, chancla en el bolsillo del mandil como funda) y Semáforo en pleno ladrido.
 - Este documento — la biblia del personaje.
 
 **Continuidad visual confirmada en el arte (no cambiar sin editar esta sección):**
 1. Gorra verde / visera roja, logo **solo "TJ"**, sin wordmark, usada hacia el frente. Visera del lado izquierdo doblada hacia arriba.
-2. Rosario siempre visible sobre el jersey; la cuenta la trae en el bolsillo derecho del cargo.
+2. Rosario siempre visible sobre el jersey; es el único objeto que toca su piel.
 3. Zapatos: negros, blancos y naranjas, **sin ningún logo**.
 4. Calcetines con perrito xolo estampado (guiño a Semáforo, no adorno random).
 5. Paleta compartida entre los tres personajes: crema de fondo, ocre, coral, azul Pacífico.
+6. **Muñecas y bolsillos limpios:** nada de relojes, pulseras, cronómetros ni cordones colgando. Si aparece un objeto nuevo en su cuerpo, esta lista se edita primero.
