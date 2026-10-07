@@ -11,6 +11,10 @@ A cartoon about the San Ysidro pedestrian line, told from the side that's alread
 - 🖼️ `assets/chuy-ibarra.png` — pose heroica
 - 🖼️ `assets/dona-cuquita-semaforo.png` — Doña Cuquita y Semáforo
 
+## Animated shorts / Cortos animados
+
+The series is designed for quick 15–30 second animated episodes. The first production format, a 22-second pilot storyboard, and a batch of Tijuana-based episode ideas are in [the short episode format](docs/short-episode-format.md).
+
 ## Estado / Status
 
-Concepto y diseño de personaje. Faltan: turnaround, hoja de expresiones, DON ESPERA (villano) y el guion del piloto.
+Concepto y diseño de personaje. Short-form animation format and pilot storyboard drafted. Faltan: turnaround, hoja de expresiones y DON ESPERA (villano).

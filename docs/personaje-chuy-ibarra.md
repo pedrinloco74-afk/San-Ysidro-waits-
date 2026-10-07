@@ -36,14 +36,14 @@ Warm comedy with a dash of fantasy. Poverty is never the punchline; *waiting* is
 ## 3. look / diseño visual
 
 - Piel morena clara, rodillas siempre raspadas, pelo negro con *fade* alto y un remolino que se para solo.
-- **Snapback con el logo "TJ" de Tijuana bordado en el frente** — monograma T y J entrelazadas, con un arco chiquito que dice TIJUANA abajo. Copa verde con visera roja, y en el panel de atrás un retazo de estrellitas. La trae **normal, hacia el frente**, porque un logo que no se ve no es un logo: es un secreto.
+- **Snapback verde con visera roja y el logo "TJ" de Tijuana bordado en el frente — solo el monograma T y J entrelazadas, sin wordmark.** La trae **normal, hacia el frente**, porque un logo que no se ve no es un logo: es un secreto.
   - La bordó su abuela a máquina con hilo que compró en la Obrera, así que **no es merchandising oficial de la ciudad: es merchandising de una familia.** (Símbolo del personaje: cosida, no comprada. Un país no se lleva puesto, se lleva remendado.)
   - La visera tiene una abolladura del lado izquierdo: se la levantó contra el sol miles de veces mirando hacia la garita. Eso es su "reloj" real.
   - **Regla de continuidad:** el logo TJ siempre visible en cualquier plano del personaje. Si cambia de ropa en un episodio, la gorra no cambia.
-- Jersey de fútbol naranja y negro sobre playera blanca; short cargo con bolsillos llenos de mangos y chile en polvo.
+- Jersey de fútbol naranja y negro sobre playera blanca; short cargo with closed, empty pockets. The mango-and-chile cups are carried in the scene, never stored in his pockets.
 - Tenis de caña alta, uno con el cordón desamarrado (nunca se amarra: "si me amarro, me detengo").
 - calcetines con estampado de perrito xolo.
-- **Al cuello: el rosario de su abuela.** Cuenta de madera oscura, crucifijo de plata chiquito, medallita de la Virgen. No lo reza, lo *acaricia* cuando está nervioso (y lo encuentra en el bolsillo derecho sin meter la mano, siempre). Es lo único que no puede perder, y lo intenta perder tres veces en la temporada.
+- **Al cuello: el rosario de su abuela.** Cuenta de madera oscura y un crucifijo de plata chiquito (sin medallita adicional). No lo reza, lo *acaricia* cuando está nervioso (y lo encuentra en el bolsillo derecho sin meter la mano, siempre). Es lo único que no puede perder, y lo intenta perder tres veces en la temporada.
 - **Manos y muñecas desnudas. Cero relojes, cero pulseras, cero cronómetros.** El reloj estaba en el cuello, se movió al bolsillo, y ahora se fue del diseño. **Qué ganamos con eso:** el único objeto tocando su piel es el rosario de su abuela, así que la silueta dice "fe heredada" y no "quiosco de souvenirs fronterizo". Y un niño que se mueve sin cargar nada es un niño que nunca tiene que abrir la bolsa de los papeles frente a nadie.
 - **Dónde se fue la doble ciudadanía:** ya no la lleva puesta, la guarda. Vive en la **lata de café** sobre el refrigerador de Doña Cuquita, con los dos pasaportes adentro, el acta de nacimiento de California y una foto desteñida. Nadie necesita verla para saber que está ahí. Regla de la serie: **la ciudadanía de Chuy nunca entra en cuadro, siempre se menciona** — se nombra en diálogo, nunca se decora.
 - El **Cronómetro** sobrevive como apodo de su ojo, no como artefacto: la gente del barrio le dice "el Cronómetro" a Chuy porque nunca se equivoca con las horas. Verde = avanza. Rojo = corre.
