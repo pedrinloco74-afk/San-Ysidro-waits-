@@ -1,0 +1,9 @@
+# build environments
+.venv/
+node_modules/
+.fontcache/
+__pycache__/
+*.pyc
+
+# scratch
+/tmp/
