@@ -1,8 +1,8 @@
 # THE EX-FILES — KDP publishing pack
 
-**A Crossword Book for Men Who Are Absolutely Fine: 15 Adult Humour Puzzles About Your Ex**
+**A Crossword Book for Men Who Are Absolutely Fine: 8 Adult Humour Puzzles About Your Ex**
 
-A ready-to-upload Amazon KDP puzzle book: 15 hand-built, fully verified crossword
+A ready-to-upload Amazon KDP puzzle book: 8 hand-built, fully verified crossword
 puzzles about the ex-girlfriend, written in adult-humour voice, plus a full answer
 key and comedy filler pages.
 
@@ -16,10 +16,10 @@ is cleaned up later.
 
 | What | Link |
 |---|---|
-| **Full book — PDF (29 pages)** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/41da57857ce04d631bbee0aefaa0635dc5ec07a3/docs/book.pdf](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/41da57857ce04d631bbee0aefaa0635dc5ec07a3/docs/book.pdf) |
-| **Kindle eBook — EPUB** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/41da57857ce04d631bbee0aefaa0635dc5ec07a3/ebook/THE_EX_FILES_kindle.epub](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/41da57857ce04d631bbee0aefaa0635dc5ec07a3/ebook/THE_EX_FILES_kindle.epub) |
-| **eBook cover — JPG 1600x2560** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/41da57857ce04d631bbee0aefaa0635dc5ec07a3/cover/The_Ex_Files_ebook_cover_1600x2560.jpg](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/41da57857ce04d631bbee0aefaa0635dc5ec07a3/cover/The_Ex_Files_ebook_cover_1600x2560.jpg) |
-| **Paperback cover — PDF wrap** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/41da57857ce04d631bbee0aefaa0635dc5ec07a3/cover/The_Ex_Files_paperback_wrap.pdf](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/41da57857ce04d631bbee0aefaa0635dc5ec07a3/cover/The_Ex_Files_paperback_wrap.pdf) |
+| **Full book — PDF (25 pages)** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/5532e7c5d92f5646275c7b33db80984d71f3c970/docs/book.pdf](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/5532e7c5d92f5646275c7b33db80984d71f3c970/docs/book.pdf) |
+| **Kindle eBook — EPUB** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/5532e7c5d92f5646275c7b33db80984d71f3c970/ebook/THE_EX_FILES_kindle.epub](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/5532e7c5d92f5646275c7b33db80984d71f3c970/ebook/THE_EX_FILES_kindle.epub) |
+| **eBook cover — JPG 1600x2560** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/5532e7c5d92f5646275c7b33db80984d71f3c970/cover/The_Ex_Files_ebook_cover_1600x2560.jpg](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/5532e7c5d92f5646275c7b33db80984d71f3c970/cover/The_Ex_Files_ebook_cover_1600x2560.jpg) |
+| **Paperback cover — PDF wrap** | [https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/5532e7c5d92f5646275c7b33db80984d71f3c970/cover/The_Ex_Files_paperback_wrap.pdf](https://github.com/pedrinloco74-afk/San-Ysidro-waits-/raw/5532e7c5d92f5646275c7b33db80984d71f3c970/cover/The_Ex_Files_paperback_wrap.pdf) |
 
 No GitHub account is needed. On a desktop the file downloads immediately; on
 GitHub's file page (not the raw link) use the **Download raw file** button.
@@ -50,16 +50,16 @@ size, search and dictionary lookup keep working.
 
 | File | Use it for | KDP setting |
 |---|---|---|
-| `The_Ex_Files_Crossword_Book_8.5x11_KDP.pdf` | **Paperback interior** | 8.5 x 11 in, **No bleed**, Black & white on **White** paper, **29 pages** |
+| `The_Ex_Files_Crossword_Book_8.5x11_KDP.pdf` | **Paperback interior** | 8.5 x 11 in, **No bleed**, Black & white on **White** paper, **25 pages** |
 | `cover/The_Ex_Files_paperback_wrap.pdf` | **Paperback cover** (front + spine + back, 0.125" bleed included) | Upload as the cover PDF |
 
 The interior PDF already contains the title page, copyright/instructions page, all
-15 puzzles, 5 answer-key pages, and the comedy pages. Everything is black text on
+8 puzzles, 8 answer-key pages (one per puzzle) and the comedy pages. Everything is black text on
 white, all fonts are embedded, and no content enters the trim margins.
 
 ## What differs between the two editions
 
-Both editions contain the same 15 puzzles, the same clues and the same answer
+Both editions contain the same 8 puzzles, the same clues and the same answer
 key (generated from one build, so they can never disagree).
 
 * **Print** has tick-boxes, the scorecard and blank lines you write on, plus
@@ -71,11 +71,11 @@ key (generated from one build, so they can never disagree).
 
 ## Spine width note
 
-The wrap cover was generated for **29 pages on white paper** → spine ≈ **0.065 in**
-(total wrap 17.315 x 11.25 in). If you change the page count, regenerate:
+The wrap cover was generated for **25 pages on white paper** → spine ≈ **0.056 in**
+(total wrap 17.306 x 11.25 in). If you change the page count, regenerate:
 
 ```bash
-python src/covers.py          # uses pages=29 by default
+python tools/make_covers.py    # page count lives in PAGES at the top
 ```
 
 ## Trim / paper choices
@@ -90,7 +90,7 @@ python src/covers.py          # uses pages=29 by default
 
 **Title:** The Ex-Files
 
-**Subtitle:** A Crossword Book for Men Who Are Absolutely Fine: 15 Adult Humour
+**Subtitle:** A Crossword Book for Men Who Are Absolutely Fine: 8 Adult Humour
 Puzzles About Your Ex
 
 **Description** (paste into KDP's description box):
@@ -98,11 +98,11 @@ Puzzles About Your Ex
 > She kept the dog. You kept the words.
 >
 > THE EX-FILES is a real crossword book for the man who is doing fine. Completely
-> fine. So fine that he has filled fifteen large-print grids with clues about her,
+> fine. So fine that he has filled eight large-print grids with clues about her,
 > her new boyfriend, her mother, the group chat that holds him upright, and the
 > playlist he has been told to delete twice.
 >
-> Inside you'll find fifteen original puzzles, each one built around the language
+> Inside you'll find eight original puzzles, each one built around the language
 > of the modern breakup — the unsent text, the 2 a.m. spiral, the rebranded dog,
 > the speech at her brother's wedding that everybody still brings up.
 >
@@ -110,7 +110,7 @@ Puzzles About Your Ex
 > the group chat will send you in the next thirty days, a promises page you will
 > fail, and a scorecard you should not fill in honestly.
 >
-> - 15 original crossword puzzles, 30–43 answers each
+> - 8 original crossword puzzles, 32–43 answers each
 > - Large 8.5 x 11 inch pages, easy to write in
 > - Full answer key at the back (nobody saw you turn to it)
 > - Adult humour: drinking, swearing, and one clue about the rebound that lands
@@ -146,7 +146,7 @@ answers impossible:
    already fits an interlocking grid, so every puzzle is **valid by construction**:
    no accidental runs, no disconnected islands, no duplicate answers. Theme words
    are prioritised until each grid carries a quota of them.
-4. `tools/make_book.py` — builds 15 puzzles, then **verifies every entry**: it
+4. `tools/make_book.py` — builds 8 puzzles, then **verifies every entry**: it
    re-spells each answer from the actual grid letters and checks that every white
    cell belongs to a listed clue. It refuses to write a PDF if anything fails.
 5. `src/render.py` / `src/extras.py` / `src/covers.py` — the PDF interior, the
@@ -157,7 +157,7 @@ Rebuild everything:
 
 ```bash
 python tools/check_bank.py     # word-bank sanity: A-Z, clue present, no dupes
-python tools/make_book.py      # 15 puzzles + verification + interior PDF
+python tools/make_book.py      # 8 puzzles + verification + interior PDF
 python tools/make_epub.py      # Kindle EPUB (reads build/puzzles.json)
 python tools/make_covers.py    # ebook cover PDF+JPG, paperback wrap PDF
 python tools/check_cover.py    # text-collision + bounds check on both covers
@@ -166,10 +166,11 @@ python tools/check_cover.py    # text-collision + bounds check on both covers
 ### About the cover
 
 The front cover carries a real, completed crossword made only from the book's
-funny themed answers — CLOSURE, WHISKEY, DIVORCE, UNSENT, DUMPED, SWIPED, MA'AM
-no, MAD, DUO and friends — with three clue call-outs underneath. It is drawn as
-vectors (not a bitmap), so the wordmark and grid stay sharp at any size, including
-the small thumbnail Amazon shows in search results.
+funny themed answers — CLOSURE, WHISKEY, GHOSTED, DUMPED, UNSENT and MAD — six
+words, hand-placed, with three clue call-outs above it and the grid anchored at
+the bottom. Fewer, bigger words read better at the size Amazon shows in search
+results than a dense grid did. It is drawn as vectors (not a bitmap), so the
+wordmark and grid stay sharp at any size.
 
 Page 1 of the print interior draws that same cover routine — same wordmark, same
 grid, same answers — scaled to sit inside the trim with 1 in side margins. The
@@ -180,7 +181,7 @@ different covers.
 
 `tools/make_epub.py` validates its own output: it checks the EPUB `mimetype` is
 stored first and uncompressed, parses every XML file, confirms every manifest and
-in-page reference resolves, and then walks all 15 puzzles checking that the exact
+in-page reference resolves, and then walks all 8 puzzles checking that the exact
 clue text, every clue number and every answer image made it into the book. It
 exits non-zero rather than shipping a broken file.
 
