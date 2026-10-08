@@ -127,10 +127,19 @@ class Book(FPDF):
     def footer(self):
         if self.cover_mode:
             return
+        names = THEME_ICONS.get(self.chapter, DEFAULT_ICONS)
         # decorative themed icon strip when the page ends early
-        if (H - 58) - self.get_y() > 56:
-            icons_row(THEME_ICONS.get(self.chapter, DEFAULT_ICONS),
-                      W / 2, H - 80, 12, 9)
+        if (H - 58) - self.get_y() > 44:
+            icons_row(names, W / 2, H - 78, 13, 9)
+        # vertical icon column down the outer margin
+        mx = W - 36 if self.page_no() % 2 == 1 else 26
+        yy = 64
+        end = min(self.get_y() - 10, H - 66)
+        k = 0
+        while yy + 11 < end and k < 14:
+            icon(names[k % len(names)], mx, yy, 11)
+            yy += 26
+            k += 1
         self.set_draw_color(*LINE)
         self.set_line_width(0.5)
         self.line(M, H - 54, W - M, H - 54)
@@ -138,6 +147,8 @@ class Book(FPDF):
         self.set_text_color(*MUTED)
         self.set_xy(M, H - 48)
         self.cell(CW, 12, str(self.page_no()), align="C")
+        icon("chile", W / 2 - 17, H - 47.5, 8)
+        icon("lime", W / 2 + 11, H - 47.5, 8)
 
 
 pdf = Book()
@@ -268,6 +279,8 @@ def bullet(text, size=10.3, leading=14.4, color=INK, marker="dash",
                 pdf.ellipse(M + indent + 3, pdf.get_y() + size * 0.35, 3.2, 3.2, "F")
             elif marker == "chile":
                 chile_icon(M + indent + 1, pdf.get_y() + 1, 11, RED)
+            elif marker in _ICON_FUNCS:
+                icon(marker, M + indent + 0.5, pdf.get_y() + size * 0.22, 13)
             pdf.set_x(M + indent + 18)
         pdf.set_text_color(*color)
         pdf.multi_cell(CW - 18 - indent, leading, ln, markdown=True,
@@ -335,10 +348,14 @@ def step(num, title, text, size=10.5, leading=15.2):
     pdf.set_text_color(*PAPER)
     pdf.set_xy(M + 1, y0 + 1.5 + (2 * r - 13) / 2)
     pdf.cell(2 * r, 13, str(num), align="C")
+    sic = STEP_ICONS.get(title)
+    if sic:
+        icon(sic, W - M - 15, y0 + 1, 14)
     pdf.set_font("D", "B", 11.6)
     pdf.set_text_color(*INK)
     pdf.set_xy(M + 2 * r + 9, y0)
-    pdf.multi_cell(CW - 2 * r - 9, 15, title, new_x="LEFT", new_y="NEXT")
+    pdf.multi_cell(CW - 2 * r - 9 - (18 if sic else 0), 15, title,
+                   new_x="LEFT", new_y="NEXT")
     space(2.5)
     pdf.set_font("B", "", size)
     pdf.set_text_color(*INK2)
@@ -844,6 +861,27 @@ H2_ICONS = {
     "The plate, minus the taco": "lime",
     "Cheat sheet, one page": "taco",
     "Your birria, your numbers": "cilantro",
+}
+
+STEP_ICONS = {
+    "Clean the chiles": "chile", "Toast them": "chile", "Soak them": "bowl",
+    "Char the aromatics": "garlic", "Blend it smooth": "chile",
+    "Strain it": "lime", "Coat the meat": "cow",
+    "Sear, if you have the patience": "cow", "Build the pot": "pot",
+    "Cook it": "pot", "Know when it's done": "cow",
+    "Lift out the meat": "cow", "Skim the fat - and keep it": "bowl",
+    "Season the consomme hard": "bowl",
+    "Crisp the meat before serving": "cow", "Heat the plancha": "pot",
+    "Dip the tortilla": "tortilla", "Cheese, then meat": "cheese",
+    "Fold and griddle": "taco", "Serve it in ninety seconds": "bowl",
+}
+
+TROUBLE_ICONS = {
+    "It tastes bitter": "chile", "The consomme is gritty": "pot",
+    "It tastes flat and dull": "lime", "The meat is dry and stringy": "cow",
+    "The consomme is thin": "bowl", "Way too spicy": "chile",
+    "The cheese won't stretch": "cheese",
+    "It smells like a barbecue": "pot",
 }
 
 BOX_ICONS = {
@@ -1414,11 +1452,13 @@ def build_chiles():
 
     h3("THE AROMATICS", before=3)
     bullet("**Garlic, 8-10 cloves, unpeeled.** Char until the skins "
-           "blacken in spots, then peel - charred is sweet, raw is sharp.")
+           "blacken in spots, then peel - charred is sweet, raw is sharp.",
+           marker="garlic")
     bullet("**White onion, 1.** Half into the paste raw, half diced for "
-           "topping. Never yellow in the paste - too sweet.")
+           "topping. Never yellow in the paste - too sweet.",
+           marker="onion")
     bullet("**Roma tomatoes, 3.** Charred until blistered - body, sweetness, "
-           "acid. Crushed canned tomato works in a pinch.")
+           "acid. Crushed canned tomato works in a pinch.", marker="tomato")
 
 
 # ---------------------------------------------------------- 8-9. SHOPPING
@@ -1484,28 +1524,29 @@ def build_shopping():
          "beef fat, tortillas made that morning.", size=9.9, leading=13.8,
          color=INK2, gap_after=4)
     bullet("**Northgate Market** (CA, TX): full carniceria, great chile wall, "
-           "tortilleria in store.", marker="dot")
+           "tortilleria in store.", marker="tortilla")
     bullet("**Vallarta, El Super, Cardenas, Superior Grocers, La Michoacana** "
            "(CA, NV, AZ, TX): the standard Southern California birria run.",
-           marker="dot")
+           marker="cheese")
     bullet("**Fiesta Mart** (TX), **Sedano's** (FL), **Bravo, Compare "
-           "Foods**: same idea, different coasts.", marker="dot")
+           "Foods**: same idea, different coasts.", marker="chile")
     bullet("**99 Ranch, H Mart, Zion and other Asian markets**: the best "
            "oxtail in town - cheaper, thicker-cut, usually fresh not frozen.",
-           marker="dot")
+           marker="lime")
     space(2)
     h2("Cheese and tortillas", size=13.5)
     bullet("**Queso Oaxaca (quesillo)**: the ideal - stringy, mild, browns "
            "beautifully. Any Mexican market; most big chains now.",
-           marker="dot")
+           marker="cheese")
     bullet("**Queso Chihuahua / menonita**: the northern alternative. Melts "
-           "smoother, browns slower.", marker="dot")
+           "smoother, browns slower.", marker="cheese")
     bullet("**Low-moisture whole-milk mozzarella**: what half the LA trucks "
            "actually use. Buy the block and shred it yourself - pre-shredded "
-           "is coated in cellulose and will not stretch.", marker="dot")
+           "is coated in cellulose and will not stretch.", marker="cheese")
     bullet("**Corn tortillas, taquera size (about 5 in)**, from a tortilleria "
            "if possible. Guerrero, Mission, La Banderita and El Milagro are "
-           "the reliable bags. Warm the stack or they crack.", marker="dot")
+           "the reliable bags. Warm the stack or they crack.",
+           marker="tortilla")
     space(2)
     h2("Online, if there's nothing nearby", size=13.5)
     para("Dried chiles travel well and keep for months. Goya, Don Enrique and "
@@ -1530,20 +1571,23 @@ def build_equipment():
           "work.")
     h3("ESSENTIAL", before=2)
     bullet("**7-8 quart Dutch oven**, tight lid. Heavy is the whole point; "
-           "a thin pot scorches the paste in the last hour.")
+           "a thin pot scorches the paste in the last hour.", marker="pot")
     bullet("**Blender** - a $30 one is fine, you're straining the paste "
-           "anyway.")
+           "anyway.", marker="chile")
     bullet("**Fine-mesh strainer** - non-negotiable: the difference "
-           "between silky restaurant consomme and gritty home braise.")
+           "between silky restaurant consomme and gritty home braise.",
+           marker="garlic")
     bullet("**A comal, cast-iron skillet or wide pan** for toasting and "
-           "griddling - a comal is about $15 - plus tongs and two forks.")
+           "griddling - a comal is about $15 - plus tongs and two forks.",
+           marker="tortilla")
     h3("NICE TO HAVE")
     bullet("**Pressure cooker / Instant Pot.** 45 minutes instead of 3.5 "
-           "hours, texture just as good - the best shortcut in this book.")
+           "hours, texture just as good - the best shortcut in this book.",
+           marker="pot")
     bullet("**Slow cooker.** 8-9 hours on low; boil the consomme down 15 "
-           "minutes at the end.")
+           "minutes at the end.", marker="bowl")
     bullet("**Digital scale, fat separator, mortar and pestle** - scale for "
-           "chiles and salt, separator for the fat cap.")
+           "chiles and salt, separator for the fat cap.", marker="cinnamon")
     h3("TIMING, BY METHOD (5 LB OF MEAT)", before=4)
     timeline(M, pdf.get_y(), CW, [
         ("Pressure cooker", 45, "45 min"),
@@ -1857,16 +1901,16 @@ def build_quesabirria():
 
     h2("The plate, minus the taco", size=13.5)
     bullet("**Onion and cilantro**, chopped fine and mixed together. Not a "
-           "garnish - a requirement.", marker="dot")
+           "garnish - a requirement.", marker="onion")
     bullet("**Lime wedges.** Birria is rich; acid is not optional.",
-           marker="dot")
+           marker="lime")
     bullet("**Pickled onions** - slice one thin, cover with the juice of 3 "
            "limes and a pinch of salt, wait 30 minutes. Or the classic jarred "
-           "escabeche of carrots, onion and jalapeno.", marker="dot")
+           "escabeche of carrots, onion and jalapeno.", marker="onion")
     bullet("**A cup of consomme** for every person, topped with onion, "
-           "cilantro and lime. This is the whole point.", marker="dot")
+           "cilantro and lime. This is the whole point.", marker="bowl")
     bullet("**To drink:** horchata, jamaica, a Mexican Coke in the bottle, or "
-           "a cold lager with lime in the neck.", marker="dot")
+           "a cold lager with lime in the neck.", marker="lime")
     space(2)
     box("How to eat one without embarrassment", [
         "Hold it over the consomme. Dunk a corner, bite, dunk again. Crisp at the edges, soft where the broth got in. If cheese escapes, you have done it correctly.",
@@ -1980,10 +2024,13 @@ def build_trouble():
     ]
     for i, (prob, why, fix) in enumerate(issues):
         ensure(62)
+        ti = TROUBLE_ICONS.get(prob)
+        if ti:
+            icon(ti, M, pdf.get_y() - 1.5, 15)
         pdf.set_font("D", "B", 11.4)
         pdf.set_text_color(*RED)
-        pdf.set_x(M)
-        pdf.cell(CW, 15, prob)
+        pdf.set_x(M + (20 if ti else 0))
+        pdf.cell(CW - (20 if ti else 0), 15, prob)
         space(15.2)
         pdf.set_font("U", "B", 8.3)
         pdf.set_text_color(*MUTED)
