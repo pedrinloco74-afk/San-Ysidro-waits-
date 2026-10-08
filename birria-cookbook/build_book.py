@@ -2089,7 +2089,9 @@ def build_back():
          "the consomme.", size=11.4, leading=16.5, family="D", style="I",
          color=RED, align="C", gap_after=2)
     para("- THE END -", size=8.6, family="U", style="BB", color=MUTED,
-         align="C")
+         align="C", gap_after=4)
+    para("A BIRRIA FIELD GUIDE BY CESAR PEDRIN", size=9.2, family="U",
+         style="BB", color=INK, align="C")
 
 
 def main():
