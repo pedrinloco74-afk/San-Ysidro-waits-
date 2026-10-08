@@ -15,7 +15,7 @@ from fpdf import FPDF
 from fpdf.enums import MethodReturnValue
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-ART = os.path.join(HERE, "art")
+ART = os.path.join(HERE, "photos")
 JPG = os.path.join(HERE, "art_jpg")
 FONTS = os.path.join(HERE, "fonts")
 
@@ -44,23 +44,24 @@ FONT_DIR = FONTS
 
 # ------------------------------------------------------------------ image prep
 def prep_images():
-    """Downscale + JPEG-encode the artwork once, cache in art_jpg/."""
+    """Downscale + JPEG-encode the photographs once, cache in art_jpg/."""
     os.makedirs(JPG, exist_ok=True)
     out = {}
     for name in sorted(os.listdir(ART)):
-        if not name.lower().endswith(".png"):
+        stem, ext = os.path.splitext(name)
+        if ext.lower() not in (".jpg", ".jpeg", ".png", ".webp"):
             continue
         src = os.path.join(ART, name)
-        dst = os.path.join(JPG, name.replace(".png", ".jpg"))
+        dst = os.path.join(JPG, stem + ".jpg")
         if not os.path.exists(dst):
             im = Image.open(src).convert("RGB")
             if im.width > 1500:
                 im = im.resize((1500, round(im.height * 1500 / im.width)),
                                Image.LANCZOS)
             im.save(dst, "JPEG", quality=86, optimize=True)
-        out[name.replace(".png", "")] = dst
-    # square centre-crop of the cover art for the title page
-    src = os.path.join(ART, "cover.png")
+        out[stem] = dst
+    # square centre-crop of the cover photo for the title page
+    src = os.path.join(ART, "cover.jpg")
     dst = os.path.join(JPG, "cover_sq.jpg")
     if not os.path.exists(dst):
         im = Image.open(src).convert("RGB")
@@ -765,7 +766,7 @@ def build_cover():
     pdf.set_font("B", "I", 8.6)
     pdf.set_text_color(*MUTED)
     pdf.set_xy(M, H - 78)
-    pdf.cell(CW, 12, "19 pages  -  10 painted plates  -  one very long nap",
+    pdf.cell(CW, 12, "19 pages  -  10 photographs  -  one very long nap",
              align="C")
     pdf.cover_mode = False
 
@@ -854,9 +855,9 @@ def build_meat():
     h1("The meat")
     lead("**The formula: 60% meaty, fatty cut + 40% bone-in, collagen-heavy "
          "cut.** The meat is dinner; the bones are the consomme. Buy both.")
-    image("cuts", 300, "The working five: chuck, cross-cut shank, bone-in "
-          "short ribs, oxtail, beef cheek. Ask for them by the Spanish name "
-          "and the butcher takes you seriously.")
+    image("cuts", 300, "Bone-in chuck short ribs: fat, marrow and collagen "
+          "- the three things the pot is built on. Ask for them by the "
+          "Spanish name and the butcher takes you seriously.")
     cuts = [
         ("Beef chuck roast", "aguja / diezmillo",
          "The backbone of the braise: marbled, collagen-rich, shreds juicy. "
@@ -954,9 +955,8 @@ def build_chiles():
     lead("Birria is red because of **guajillo**. House ratio: **6 guajillo : "
          "2 ancho : 1 pasilla** plus 3-6 arbol - by weight, 50 / 20 / 10 / 3 "
          "g. Weight never lies.")
-    image("chiles", 224, "Left to right: guajillo (bright, smooth, the "
-          "workhorse), ancho (dark, wrinkled, raisiny), pasilla (long, almost "
-          "black) and chile de arbol (small and hot).")
+    image("chiles", 224, "Ancho (dark, wrinkled, raisiny) and guajillo "
+          "(bright, smooth, tangy) - the two chiles the whole pot is built on.")
     ch = [
         ("Guajillo", "Thin-walled, glossy, brick red, faintly sour and "
          "tea-like. Gives birria its colour and brightness. Flat, brown "
@@ -997,8 +997,8 @@ def build_chiles():
          "get 30-60 seconds in a dry pan until they smell loud.", size=10,
          leading=14, color=INK2, gap_after=3)
     duo("aromatics", "spices",
-        "Fresh aromatics: garlic, onion, tomato, ginger.  /  Toasted whole "
-        "spices: cumin, pepper, cloves, canela, oregano.", w=172)
+        "Fresh aromatics: garlic, onion, tomatoes.  /  The whole-spice "
+        "shelf: canela, cloves, peppercorns and more.", w=172)
     sp = [
         ("Canela (Mexican cinnamon), 1 stick",
          "Softer and more floral than cassia - the background warmth of the "
@@ -1145,8 +1145,8 @@ def build_equipment():
     para("You need one heavy pot and a blender - a $60 enameled Lodge will "
          "outlive you. Everything else is a convenience.", size=10,
          leading=14, color=INK2, gap_after=3)
-    image("equipment", 182, "Dutch oven, blender, fine-mesh strainer, tongs, "
-          "two forks, comal, ladle, knife.")
+    image("equipment", 182, "One heavy, tight-lidded pot does most of the "
+          "work.")
     h3("ESSENTIAL", before=2)
     bullet("**7-8 quart Dutch oven**, tight lid. Heavy is the whole point; "
            "a thin pot scorches the paste in the last hour.")
@@ -1635,6 +1635,13 @@ def build_back():
         pdf.set_line_width(0.6)
         pdf.line(M, y, W - M, y)
         pdf.set_y(y + 13)
+    space(2)
+    para("Photographs from public web sources: crumbsnatched.com, "
+         "thebigmansworld.com, mexicoinmykitchen.com, feastingathome.com, "
+         "asimplepalate.com, expatinsurance.com, thespruceeats.com, "
+         "spice.alibaba.com, eathealthy365.com. For personal, non-commercial "
+         "use.", size=7.6, leading=10.4, family="B", style="I", color=MUTED,
+         align="C", gap_after=2)
     ornament()
     para("Cook it for people. Make twice as much as you think you need. Keep "
          "the consomme.", size=11.4, leading=16.5, family="D", style="I",
