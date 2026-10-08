@@ -25,8 +25,10 @@ python3 -m venv .venv            # or use any Python 3.10+
 ```
 
 Everything is laid out programmatically — typography, the pot cross-section
-diagram, the quesabirria fold sequence, the heat and timing bars — so text
-edits in `build_book.py` rebuild cleanly. To swap a photo, replace the
+diagram, the quesabirria fold sequence, the heat and timing bars, and the
+hand-drawn icon set (cow/goat/sheep/pig for meats, plus tacos, chiles,
+limes, tortillas, cheese, pots and Tijuana rubber-stamps) — so text edits
+in `build_book.py` rebuild cleanly. To swap a photo, replace the
 matching file in `photos/` (same name, any reasonable size) and re-run.
 
 Photographs are from public web sources for personal, non-commercial use.

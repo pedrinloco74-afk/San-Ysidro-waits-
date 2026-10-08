@@ -116,6 +116,10 @@ class Book(FPDF):
         self.set_font("U", "B", 7)
         self.set_xy(W - M - 120, 26)
         self.cell(120, 9, "TIJUANA BIRRIA", align="R")
+        lbl_w = self.get_string_width("TIJUANA BIRRIA")
+        icon("taco", W - M - lbl_w - 42, 25.5, 9)
+        icon("chile", W - M - lbl_w - 28, 25.5, 9)
+        icon("lime", W - M - lbl_w - 15, 25.5, 9)
         self.set_draw_color(*LINE)
         self.set_line_width(0.6)
         self.line(M, 38, W - M, 38)
@@ -123,6 +127,10 @@ class Book(FPDF):
     def footer(self):
         if self.cover_mode:
             return
+        # decorative themed icon strip when the page ends early
+        if (H - 58) - self.get_y() > 56:
+            icons_row(THEME_ICONS.get(self.chapter, DEFAULT_ICONS),
+                      W / 2, H - 80, 12, 9)
         self.set_draw_color(*LINE)
         self.set_line_width(0.5)
         self.line(M, H - 54, W - M, H - 54)
@@ -181,6 +189,9 @@ def lead(text, size=12.4, leading=18.6):
 
 def h1(text):
     ensure(70)
+    st = H1_STAMPS.get(text.split("\n")[0])
+    if st:
+        stamp(st, W - M - 118, pdf.get_y() + 6)
     pdf.set_font("D", "BB", 27)
     pdf.set_text_color(*RED)
     pdf.set_x(M)
@@ -193,10 +204,14 @@ def h1(text):
 def h2(text, size=15, color=INK, before=10):
     space(before)
     ensure(46)
+    ic = H2_ICONS.get(text)
+    if ic:
+        icon(ic, M, pdf.get_y() + 1, 12)
     pdf.set_font("D", "B", size)
     pdf.set_text_color(*color)
-    pdf.set_x(M)
-    pdf.multi_cell(CW, size + 6, text, new_x="LEFT", new_y="NEXT")
+    pdf.set_x(M + (17 if ic else 0))
+    pdf.multi_cell(CW - (17 if ic else 0), size + 6, text,
+                   new_x="LEFT", new_y="NEXT")
     space(3)
 
 
@@ -226,8 +241,10 @@ def ornament(gap=9):
     cx = W / 2
     pdf.set_draw_color(*LINE)
     pdf.set_line_width(0.6)
-    pdf.line(M, y, cx - 22, y)
-    pdf.line(cx + 22, y, W - M, y)
+    pdf.line(M, y, cx - 24, y)
+    pdf.line(cx + 24, y, W - M, y)
+    icon("taco", cx - 42, y - 4, 9)
+    icon("lime", cx + 30, y - 4, 8)
     pdf.set_fill_color(*RED)
     pdf.polygon([(cx, y - 4.5), (cx + 4.5, y), (cx, y + 4.5), (cx - 4.5, y)],
                 style="F")
@@ -255,6 +272,21 @@ def bullet(text, size=10.3, leading=14.4, color=INK, marker="dash",
         pdf.set_text_color(*color)
         pdf.multi_cell(CW - 18 - indent, leading, ln, markdown=True,
                        new_x="LEFT", new_y="NEXT")
+    space(gap - 0.8)
+
+
+def animal_bullet(text, animal, size=10.3, leading=14.4, color=INK,
+                 gap=4.6):
+    """Bullet with a tiny animal icon (cow / goat / sheep / pig) instead."""
+    pdf.set_font("B", "", size)
+    lines = _wrap(text, CW - 22, size)
+    ensure(len(lines) * leading + gap)
+    icon(animal, M, pdf.get_y() - 2, 15)
+    for ln in lines:
+        pdf.set_x(M + 22)
+        pdf.set_text_color(*color)
+        pdf.multi_cell(CW - 22, leading, ln, markdown=True, new_x="LEFT",
+                       new_y="NEXT")
     space(gap - 0.8)
 
 
@@ -350,7 +382,7 @@ def ing(amount, item, note="", size=10.2, leading=14.4):
 
 
 def box(title, lines, tint=CREAM, edge=LINE, title_color=RED, size=10.0,
-        leading=14.2, gap_before=7):
+        leading=14.2, gap_before=7, icon_name=None):
     space(gap_before)
     pad = 9
     inner = CW - 2 * pad
@@ -368,10 +400,13 @@ def box(title, lines, tint=CREAM, edge=LINE, title_color=RED, size=10.0,
     pdf.rect(M, y0, CW, total, style="DF")
     y = y0 + pad
     if title:
+        bi = icon_name or BOX_ICONS.get(title)
+        if bi:
+            icon(bi, M + pad, y + 0.5, 11)
         pdf.set_font("U", "BB", 9.4)
         pdf.set_text_color(*title_color)
-        pdf.set_xy(M + pad, y)
-        pdf.cell(inner, 12, title.upper())
+        pdf.set_xy(M + pad + (15 if bi else 0), y)
+        pdf.cell(inner - (15 if bi else 0), 12, title.upper())
         y += 17
     for ln in lines:
         for seg in _wrap(ln, inner, size):
@@ -435,20 +470,23 @@ def duo(key_a, key_b, cap="", gap=14, w=None):
         caption(cap)
 
 
-def contents_row(num, title, page):
+def contents_row(num, title, page, ic=None):
     ensure(20)
+    x0 = M + (16 if ic else 0)
+    if ic:
+        icon(ic, M, pdf.get_y() + 1, 12)
     pdf.set_font("U", "B", 8.4)
     pdf.set_text_color(*RED)
-    pdf.set_x(M)
+    pdf.set_x(x0)
     pdf.cell(20, 14, num, align="L")
     pdf.set_font("B", "", 10.6)
     pdf.set_text_color(*INK)
-    pdf.set_xy(M + 22, pdf.get_y())
+    pdf.set_xy(x0 + 22, pdf.get_y())
     tw = pdf.get_string_width(title)
     pdf.cell(tw + 6, 14, title, align="L")
     pdf.set_font("U", "", 8.6)
     pdf.set_text_color(*MUTED)
-    x = M + 28 + tw
+    x = x0 + 28 + tw
     pw = pdf.get_string_width(page) + 6
     pdf.set_xy(x, pdf.get_y())
     pdf.cell(max(0.0, W - M - 4 - x - pw), 14,
@@ -484,6 +522,342 @@ def chile_icon(x, y, length, color=RED, wid=3.4, curve=0.30, stem=True):
         pdf.set_draw_color(*GREEN)
         pdf.set_line_width(1.5)
         pdf.line(x, y + wid, x - length * 0.13, y - wid * 0.5)
+
+
+
+# ------------------------------------------------------------- tiny icons
+def _ell(cx, cy, w, h, fill=None, draw=None, lw=0.6):
+    if fill is not None:
+        pdf.set_fill_color(*fill)
+    if draw is not None:
+        pdf.set_draw_color(*draw)
+    pdf.set_line_width(lw)
+    if fill is not None and draw is not None:
+        style = "DF"
+    elif fill is not None:
+        style = "F"
+    else:
+        style = "D"
+    pdf.ellipse(cx - w / 2, cy - h / 2, w, h, style=style)
+
+
+def _ico_cow(x, y, s):
+    body = (233, 221, 200); spot = (152, 104, 62); edge = (196, 178, 150)
+    pdf.set_fill_color(*spot)
+    for lx in (0.32, 0.48, 0.66):
+        pdf.rect(x + lx * s, y + 0.60 * s, 0.07 * s, 0.34 * s, "F")
+    pdf.set_draw_color(*spot); pdf.set_line_width(0.05 * s)
+    pdf.line(x + 0.88 * s, y + 0.42 * s, x + 0.94 * s, y + 0.68 * s)
+    _ell(x + 0.56 * s, y + 0.44 * s, 0.56 * s, 0.38 * s, body, edge, 0.05 * s)
+    _ell(x + 0.68 * s, y + 0.38 * s, 0.16 * s, 0.11 * s, spot)
+    _ell(x + 0.18 * s, y + 0.40 * s, 0.26 * s, 0.22 * s, body, edge, 0.05 * s)
+    _ell(x + 0.13 * s, y + 0.25 * s, 0.05 * s, 0.09 * s, (240, 234, 216))
+    _ell(x + 0.22 * s, y + 0.24 * s, 0.05 * s, 0.09 * s, (240, 234, 216))
+    _ell(x + 0.27 * s, y + 0.32 * s, 0.10 * s, 0.055 * s, spot)
+    _ell(x + 0.09 * s, y + 0.50 * s, 0.13 * s, 0.10 * s,
+         (229, 183, 172), (206, 156, 146), 0.04 * s)
+    pdf.set_fill_color(*INK)
+    pdf.ellipse(x + 0.055 * s, y + 0.485 * s, 0.02 * s, 0.02 * s, "F")
+    pdf.ellipse(x + 0.105 * s, y + 0.485 * s, 0.02 * s, 0.02 * s, "F")
+    pdf.ellipse(x + 0.165 * s, y + 0.35 * s, 0.022 * s, 0.022 * s, "F")
+
+
+def _ico_goat(x, y, s):
+    body = (224, 216, 202); horn = (120, 100, 80); edge = (190, 180, 162)
+    pdf.set_fill_color(*horn)
+    for lx in (0.34, 0.50, 0.68):
+        pdf.rect(x + lx * s, y + 0.60 * s, 0.06 * s, 0.34 * s, "F")
+    _ell(x + 0.56 * s, y + 0.44 * s, 0.52 * s, 0.34 * s, body, edge, 0.05 * s)
+    pdf.set_fill_color(*body)
+    pdf.polygon([(x + 0.80 * s, y + 0.38 * s), (x + 0.90 * s, y + 0.22 * s),
+                 (x + 0.86 * s, y + 0.42 * s)], style="F")
+    _ell(x + 0.20 * s, y + 0.36 * s, 0.22 * s, 0.15 * s, body, edge, 0.05 * s)
+    pdf.polygon([(x + 0.10 * s, y + 0.40 * s), (x + 0.16 * s, y + 0.58 * s),
+                 (x + 0.22 * s, y + 0.42 * s)], style="F")
+    pdf.set_draw_color(*horn); pdf.set_line_width(0.075 * s)
+    pdf.line(x + 0.22 * s, y + 0.30 * s, x + 0.34 * s, y + 0.18 * s)
+    pdf.line(x + 0.28 * s, y + 0.34 * s, x + 0.40 * s, y + 0.24 * s)
+    _ell(x + 0.30 * s, y + 0.30 * s, 0.09 * s, 0.05 * s, horn)
+    pdf.set_fill_color(*INK)
+    pdf.ellipse(x + 0.14 * s, y + 0.33 * s, 0.022 * s, 0.022 * s, "F")
+
+
+def _ico_sheep(x, y, s):
+    wool = (244, 240, 232); face = (112, 102, 94)
+    pdf.set_fill_color(*face)
+    for lx in (0.38, 0.58):
+        pdf.rect(x + lx * s, y + 0.62 * s, 0.06 * s, 0.32 * s, "F")
+    for cx, cy, r in ((0.40, 0.48, 0.13), (0.56, 0.42, 0.14),
+                      (0.70, 0.50, 0.12), (0.54, 0.56, 0.12)):
+        _ell(x + cx * s, y + cy * s, 2 * r * s, 1.8 * r * s,
+             wool, (214, 208, 196), 0.045 * s)
+    _ell(x + 0.16 * s, y + 0.44 * s, 0.17 * s, 0.15 * s, face)
+    _ell(x + 0.24 * s, y + 0.36 * s, 0.08 * s, 0.045 * s, face)
+    pdf.set_fill_color(*INK)
+    pdf.ellipse(x + 0.10 * s, y + 0.40 * s, 0.022 * s, 0.022 * s, "F")
+
+
+def _ico_pig(x, y, s):
+    pink = (238, 175, 168); dark = (221, 148, 140)
+    pdf.set_fill_color(*dark)
+    for lx in (0.34, 0.52, 0.68):
+        pdf.rect(x + lx * s, y + 0.62 * s, 0.06 * s, 0.32 * s, "F")
+    _ell(x + 0.56 * s, y + 0.46 * s, 0.56 * s, 0.40 * s,
+         pink, (206, 140, 132), 0.05 * s)
+    pdf.set_fill_color(*dark)
+    pdf.polygon([(x + 0.22 * s, y + 0.34 * s), (x + 0.34 * s, y + 0.24 * s),
+                 (x + 0.32 * s, y + 0.38 * s)], style="F")
+    _ell(x + 0.20 * s, y + 0.48 * s, 0.22 * s, 0.20 * s,
+         pink, (206, 140, 132), 0.05 * s)
+    _ell(x + 0.09 * s, y + 0.50 * s, 0.12 * s, 0.10 * s,
+         dark, (196, 126, 118), 0.04 * s)
+    pdf.set_fill_color(*INK)
+    pdf.ellipse(x + 0.055 * s, y + 0.485 * s, 0.02 * s, 0.02 * s, "F")
+    pdf.ellipse(x + 0.105 * s, y + 0.485 * s, 0.02 * s, 0.02 * s, "F")
+    pdf.ellipse(x + 0.17 * s, y + 0.42 * s, 0.022 * s, 0.022 * s, "F")
+    pdf.set_draw_color(*dark); pdf.set_line_width(0.06 * s)
+    pdf.arc(x + 0.88 * s, y + 0.40 * s, 0.05 * s, 100, 400, style="D")
+
+
+def _ico_taco(x, y, s):
+    shell = (236, 205, 150); edge = (198, 160, 96)
+    cx, cy, rx, ry = x + 0.5 * s, y + 0.40 * s, 0.44 * s, 0.50 * s
+    pts = [(cx - rx, cy)]
+    for i in range(13):
+        a = math.pi + math.pi * i / 12
+        pts.append((cx + rx * math.cos(a), cy - ry * math.sin(a)))
+    pdf.set_fill_color(*shell); pdf.set_draw_color(*edge)
+    pdf.set_line_width(0.05 * s)
+    pdf.polygon(pts, style="DF")
+    for dx, r in ((-0.27, 0.075), (-0.11, 0.085), (0.05, 0.08),
+                  (0.21, 0.075), (0.33, 0.06)):
+        _ell(cx + dx * s, cy + 0.02 * s, 2 * r * s, 1.6 * r * s, (138, 52, 40))
+    for dx, dy in ((-0.2, 0.14), (0.02, 0.16), (0.24, 0.13)):
+        _ell(cx + dx * s, cy + dy * s, 0.07 * s, 0.05 * s, (242, 226, 176))
+    for dx, dy in ((-0.32, 0.10), (0.12, 0.12), (0.32, 0.09)):
+        _ell(cx + dx * s, cy + dy * s, 0.055 * s, 0.04 * s, (104, 118, 62))
+
+
+def _ico_lime(x, y, s):
+    _ell(x + 0.5 * s, y + 0.5 * s, 0.94 * s, 0.94 * s,
+         (128, 148, 66), (104, 124, 54), 0.05 * s)
+    _ell(x + 0.5 * s, y + 0.5 * s, 0.72 * s, 0.72 * s, (172, 192, 100))
+    pdf.set_draw_color(244, 242, 226); pdf.set_line_width(0.05 * s)
+    for a in (90, 210, 330):
+        dx = math.cos(math.radians(a)); dy = math.sin(math.radians(a))
+        pdf.line(x + 0.5 * s + 0.08 * s * dx, y + 0.5 * s + 0.08 * s * dy,
+                 x + 0.5 * s + 0.34 * s * dx, y + 0.5 * s + 0.34 * s * dy)
+
+
+def _ico_onion(x, y, s):
+    _ell(x + 0.5 * s, y + 0.5 * s, 0.92 * s, 0.92 * s,
+         (246, 238, 224), (206, 178, 138), 0.06 * s)
+    pdf.set_draw_color(216, 190, 152); pdf.set_line_width(0.045 * s)
+    pdf.ellipse(x + 0.28 * s, y + 0.28 * s, 0.44 * s, 0.44 * s, "D")
+    pdf.ellipse(x + 0.40 * s, y + 0.40 * s, 0.20 * s, 0.20 * s, "D")
+
+
+def _ico_tortilla(x, y, s):
+    _ell(x + 0.5 * s, y + 0.5 * s, 0.94 * s, 0.94 * s,
+         (240, 220, 182), (208, 178, 128), 0.05 * s)
+    pdf.set_fill_color(206, 172, 118)
+    for dx, dy in ((0.32, 0.36), (0.62, 0.30), (0.70, 0.62),
+                   (0.38, 0.66), (0.52, 0.50)):
+        pdf.ellipse(x + dx * s, y + dy * s, 0.05 * s, 0.05 * s, "F")
+
+
+def _ico_cheese(x, y, s):
+    pdf.set_fill_color(242, 202, 92); pdf.set_draw_color(204, 162, 62)
+    pdf.set_line_width(0.05 * s)
+    pdf.polygon([(x + 0.06 * s, y + 0.78 * s), (x + 0.94 * s, y + 0.78 * s),
+                 (x + 0.94 * s, y + 0.50 * s), (x + 0.06 * s, y + 0.30 * s)],
+                style="DF")
+    pdf.set_fill_color(224, 180, 72)
+    for dx, dy, r in ((0.32, 0.62, 0.075), (0.60, 0.64, 0.055),
+                      (0.78, 0.58, 0.045)):
+        pdf.ellipse(x + (dx - r) * s, y + (dy - r) * s,
+                    2 * r * s, 2 * r * s, "F")
+
+
+def _ico_pot(x, y, s):
+    pdf.set_draw_color(186, 168, 148); pdf.set_line_width(0.05 * s)
+    for dx in (0.34, 0.52, 0.70):
+        pdf.line(x + dx * s, y + 0.26 * s, x + (dx + 0.05) * s, y + 0.10 * s)
+    pdf.set_fill_color(62, 56, 52); pdf.set_draw_color(42, 32, 27)
+    pdf.set_line_width(0.06 * s)
+    pdf.rect(x + 0.16 * s, y + 0.42 * s, 0.68 * s, 0.40 * s, "DF")
+    pdf.rect(x + 0.05 * s, y + 0.50 * s, 0.11 * s, 0.08 * s, "F")
+    pdf.rect(x + 0.84 * s, y + 0.50 * s, 0.11 * s, 0.08 * s, "F")
+    pdf.set_fill_color(78, 70, 64)
+    pdf.ellipse(x + 0.12 * s, y + 0.34 * s, 0.76 * s, 0.12 * s, "F")
+    _ell(x + 0.5 * s, y + 0.30 * s, 0.11 * s, 0.09 * s, (166, 46, 30))
+
+
+def _ico_garlic(x, y, s):
+    _ell(x + 0.5 * s, y + 0.58 * s, 0.56 * s, 0.50 * s,
+         (242, 236, 220), (214, 200, 170), 0.05 * s)
+    pdf.set_draw_color(214, 200, 170); pdf.set_line_width(0.045 * s)
+    pdf.line(x + 0.5 * s, y + 0.36 * s, x + 0.5 * s, y + 0.82 * s)
+    pdf.set_fill_color(214, 200, 170)
+    pdf.polygon([(x + 0.44 * s, y + 0.36 * s), (x + 0.56 * s, y + 0.36 * s),
+                 (x + 0.50 * s, y + 0.18 * s)], style="F")
+    pdf.set_fill_color(190, 176, 150)
+    for dx in (0.42, 0.50, 0.58):
+        pdf.ellipse(x + dx * s, y + 0.85 * s, 0.035 * s, 0.035 * s, "F")
+
+
+def _ico_tomato(x, y, s):
+    _ell(x + 0.5 * s, y + 0.58 * s, 0.84 * s, 0.74 * s,
+         (188, 62, 46), (158, 46, 34), 0.05 * s)
+    pdf.set_fill_color(104, 118, 62)
+    pts = []
+    for i in range(8):
+        a = math.pi * i / 7
+        rr = 0.16 * s if i % 2 == 0 else 0.07 * s
+        pts.append((x + 0.5 * s + rr * math.cos(a),
+                    y + 0.20 * s - rr * math.sin(a)))
+    pdf.polygon(pts, style="F")
+
+
+def _ico_cilantro(x, y, s):
+    pdf.set_draw_color(96, 112, 56); pdf.set_line_width(0.06 * s)
+    for ex, ey in ((0.5, 0.24), (0.26, 0.32), (0.74, 0.32)):
+        pdf.line(x + 0.5 * s, y + 0.88 * s, x + ex * s, y + ey * s)
+    _ell(x + 0.5 * s, y + 0.20 * s, 0.22 * s, 0.14 * s, (128, 146, 80))
+    _ell(x + 0.26 * s, y + 0.28 * s, 0.18 * s, 0.12 * s, (108, 126, 66))
+    _ell(x + 0.74 * s, y + 0.28 * s, 0.18 * s, 0.12 * s, (108, 126, 66))
+
+
+def _ico_cinnamon(x, y, s):
+    pdf.set_fill_color(178, 128, 66); pdf.set_draw_color(150, 104, 52)
+    pdf.set_line_width(0.045 * s)
+    pdf.polygon([(x + 0.06 * s, y + 0.34 * s), (x + 0.62 * s, y + 0.20 * s),
+                 (x + 0.66 * s, y + 0.32 * s), (x + 0.10 * s, y + 0.46 * s)],
+                style="DF")
+    pdf.polygon([(x + 0.34 * s, y + 0.82 * s), (x + 0.94 * s, y + 0.60 * s),
+                 (x + 0.98 * s, y + 0.72 * s), (x + 0.38 * s, y + 0.94 * s)],
+                style="DF")
+
+
+def _ico_bowl(x, y, s):
+    pdf.set_draw_color(186, 168, 148); pdf.set_line_width(0.05 * s)
+    for dx in (0.40, 0.60):
+        pdf.line(x + dx * s, y + 0.22 * s, x + (dx + 0.04) * s, y + 0.08 * s)
+    cx, cy, r = x + 0.5 * s, y + 0.48 * s, 0.40 * s
+    pts = [(cx - r, cy)]
+    for i in range(13):
+        a = math.pi - math.pi * i / 12
+        pts.append((cx + r * math.cos(a), cy - r * math.sin(a)))
+    pdf.set_fill_color(150, 40, 28); pdf.set_draw_color(120, 30, 22)
+    pdf.set_line_width(0.05 * s)
+    pdf.polygon(pts, style="DF")
+    pdf.set_fill_color(150, 40, 28)
+    pdf.rect(cx - 0.10 * s, cy, 0.20 * s, 0.07 * s, "F")
+
+
+_ICON_FUNCS = {"cow": _ico_cow, "goat": _ico_goat, "sheep": _ico_sheep,
+               "pig": _ico_pig, "taco": _ico_taco, "lime": _ico_lime,
+               "onion": _ico_onion, "tortilla": _ico_tortilla,
+               "cheese": _ico_cheese, "pot": _ico_pot, "garlic": _ico_garlic,
+               "tomato": _ico_tomato, "cilantro": _ico_cilantro,
+               "cinnamon": _ico_cinnamon, "bowl": _ico_bowl}
+
+
+def icon(name, x, y, s):
+    """Draw a tiny thematic icon inside an s x s box at (x, y)."""
+    if name == "chile":
+        chile_icon(x + 0.18 * s, y + 0.30 * s, 0.60 * s, RED, wid=0.17 * s)
+        return
+    fn = _ICON_FUNCS.get(name)
+    if fn:
+        fn(x, y, s)
+
+
+def icons_row(names, cx, y, s=12, gap=9):
+    """A centered, slightly staggered row of icons."""
+    total = len(names) * s + (len(names) - 1) * gap
+    x = cx - total / 2
+    for i, n in enumerate(names):
+        icon(n, x, y + (1.5 if i % 2 else 0), s)
+        x += s + gap
+
+
+def stamp(text, x, y, w=112, h=19, angle=-7):
+    """A little rotated rubber-stamp badge (cursor-neutral)."""
+    x0, y0 = pdf.get_x(), pdf.get_y()
+    with pdf.rotation(angle, x + w / 2, y + h / 2):
+        pdf.set_draw_color(*RED)
+        pdf.set_line_width(1.0)
+        pdf.rect(x, y, w, h, style="D", round_corners=True, corner_radius=9)
+        pdf.set_line_width(0.45)
+        pdf.rect(x + 2.5, y + 2.5, w - 5, h - 5, style="D",
+                 round_corners=True, corner_radius=7)
+        pdf.set_font("U", "BB", 7.6)
+        pdf.set_text_color(*RED)
+        pdf.set_xy(x, y + (h - 9) / 2)
+        pdf.cell(w, 9, text, align="C")
+    pdf.set_xy(x0, y0)
+
+
+THEME_ICONS = {
+    "Contents": ["taco", "chile", "lime", "cheese", "pot", "onion"],
+    "What it is": ["pot", "taco", "chile", "lime", "bowl"],
+    "The meat": ["cow", "cow", "goat", "sheep", "pig"],
+    "The chiles": ["chile", "chile", "garlic", "tomato", "cilantro"],
+    "Where to buy it": ["tortilla", "cheese", "chile", "lime", "onion"],
+    "Equipment": ["pot", "taco", "chile", "cinnamon"],
+    "Master recipe": ["pot", "chile", "garlic", "onion", "tomato"],
+    "Quesabirria": ["taco", "cheese", "chile", "lime", "bowl"],
+    "The day after": ["taco", "bowl", "lime", "chile"],
+    "Troubleshooting": ["chile", "lime", "pot", "tomato"],
+    "Numbers & notes": ["taco", "chile", "cheese", "lime", "cilantro"],
+}
+DEFAULT_ICONS = ["chile", "lime", "taco", "onion", "cheese"]
+
+H1_STAMPS = {
+    "What Tijuana birria is": "TIJUANA · BC",
+    "The meat": "BIRRIA DE RES",
+    "The chiles": "CHILE GUAJILLO",
+    "Spices and aromatics": "CANELA & COMINO",
+    "Where to buy it": "EL MERCADO",
+    "Equipment": "LA COCINA",
+    "Birria de res": "LA RECETA",
+    "The chile paste": "EL ADOBO",
+    "Marinate, then braise": "EL REMOJO",
+    "Consomme and shred": "EL CONSOMMÉ",
+    "Quesabirria": "QUESABIRRIA",
+    "Salsa, toppings, sides": "SALSA DE ÁRBOL",
+    "The day after": "SOBRAN TACOS",
+    "Troubleshooting": "¡ÁNIMO!",
+    "Numbers and notes": "NOTAS",
+}
+
+H2_ICONS = {
+    "Good to excellent, optional": "cow",
+    "How to order it, in Spanish": "tortilla",
+    "Big national chains": "cheese",
+    "Mexican and Latino markets: go if you have one": "tortilla",
+    "Cheese and tortillas": "cheese",
+    "Online, if there's nothing nearby": "lime",
+    "Build it": "taco",
+    "Salsa de chile de arbol": "chile",
+    "The plate, minus the taco": "lime",
+    "Cheat sheet, one page": "taco",
+    "Your birria, your numbers": "cilantro",
+}
+
+BOX_ICONS = {
+    "Read this first": "chile",
+    "The three things that matter most": "pot",
+    "Do not buy these for birria": "cow",
+    "6 guajillo : 2 ancho : 1 pasilla  (+3-6 arbol for heat)": "chile",
+    "Buying dried chiles like a taquero": "chile",
+    "How to read this recipe": "pot",
+    "Five things that go wrong": "taco",
+    "How to eat one without embarrassment": "bowl",
+    "Storage": "pot",
+    "Pin this to the fridge": "taco",
+}
 
 
 def draw_pot(x, y, w, h):
@@ -749,6 +1123,8 @@ def build_cover():
                     style="F")
 
     y += 26
+    icon("cow", M + 26, y + 0.5, 13)
+    icon("goat", W - M - 39, y + 0.5, 13)
     pdf.set_font("U", "B", 8.8)
     pdf.set_text_color(*INK)
     pdf.set_xy(M, y)
@@ -782,20 +1158,20 @@ def build_contents():
     rule(1.0, RED)
     space(12)
     rows = [
-        ("1.", "What Tijuana birria is (and isn't)", "3"),
-        ("2.", "The meat: the cuts that matter", "4"),
-        ("3.", "Chiles, spices and aromatics", "6"),
-        ("4.", "Where to buy it", "8"),
-        ("5.", "Equipment", "10"),
-        ("6.", "Master recipe: birria de res", "11"),
-        ("7.", "Quesabirria: how to build one", "15"),
-        ("8.", "Salsa, toppings, sides", "16"),
-        ("9.", "The day after", "17"),
-        ("10.", "Troubleshooting", "18"),
-        ("11.", "Numbers and notes", "19"),
+        ("1.", "What Tijuana birria is (and isn't)", "3", "pot"),
+        ("2.", "The meat: the cuts that matter", "4", "cow"),
+        ("3.", "Chiles, spices and aromatics", "6", "chile"),
+        ("4.", "Where to buy it", "8", "lime"),
+        ("5.", "Equipment", "10", "cinnamon"),
+        ("6.", "Master recipe: birria de res", "11", "bowl"),
+        ("7.", "Quesabirria: how to build one", "15", "taco"),
+        ("8.", "Salsa, toppings, sides", "16", "garlic"),
+        ("9.", "The day after", "17", "onion"),
+        ("10.", "Troubleshooting", "18", "cheese"),
+        ("11.", "Numbers and notes", "19", "cilantro"),
     ]
-    for n, t, p in rows:
-        contents_row(n, t, p)
+    for n, t, p, ic in rows:
+        contents_row(n, t, p, ic)
     space(10)
     box("Read this first", [
         "Birria is a braise, not a race. Everything in this book hangs on three things: **dried chiles you toast yourself**, **at least one bone-in cut**, and **salt added at the end, not the start**. Get those right and the rest is negotiable.",
@@ -883,10 +1259,11 @@ def build_meat():
     ]
     for name, es, why, where in cuts:
         ensure(74)
+        icon("cow", M, pdf.get_y() - 2.5, 17)
         pdf.set_font("D", "B", 11.2)
         pdf.set_text_color(*RED)
-        pdf.set_x(M)
-        pdf.cell(CW - 150, 13.5, name)
+        pdf.set_x(M + 23)
+        pdf.cell(CW - 173, 13.5, name)
         pdf.set_font("B", "I", 9.3)
         pdf.set_text_color(*MUTED)
         pdf.set_xy(W - M - 150, pdf.get_y())
@@ -901,16 +1278,20 @@ def build_meat():
 
     new_page("The meat")
     h2("Good to excellent, optional", size=13.5)
-    bullet("**Brisket point (pecho).** Fatty and forgiving; shreds like a "
-           "dream. The point, not the flat, or it dries out.", marker="dot")
-    bullet("**Goat (chivo).** The Jalisco original: shoulder and ribs, same "
-           "adobo, gamier and leaner. Order from a Mexican or Halal butcher "
-           "a week ahead.", marker="dot")
-    bullet("**Lamb shoulder (borrego).** The middle road - richer than beef, "
-           "milder than goat.", marker="dot")
-    bullet("**Beef fat trimmings (grasa de res).** Ask for a handful; many "
-           "carnicerias hand them over. Render them and you have unlimited "
-           "taco fat.", marker="dot")
+    animal_bullet("**Brisket point (pecho).** Fatty and forgiving; shreds "
+                  "like a dream. The point, not the flat, or it dries out.",
+                  "cow")
+    animal_bullet("**Goat (chivo).** The Jalisco original: shoulder and "
+                  "ribs, same adobo, gamier and leaner. Order from a Mexican "
+                  "or Halal butcher a week ahead.", "goat")
+    animal_bullet("**Lamb shoulder (borrego).** The middle road - richer "
+                  "than beef, milder than goat.", "sheep")
+    animal_bullet("**Pork shoulder (cerdo).** Not traditional, but birria de "
+                  "puerco has its fans: same adobo, same braise, about three "
+                  "hours. Shoulder or country ribs.", "pig")
+    animal_bullet("**Beef fat trimmings (grasa de res).** Ask for a handful; "
+                  "many carnicerias hand them over. Render them and you have "
+                  "unlimited taco fat.", "cow")
     space(3)
     box("Do not buy these for birria", [
         "**Pre-cut 'stew meat'** - round and trim scraps, cut small; dries out before it tenderises.",
@@ -1174,6 +1555,11 @@ def build_equipment():
             "finishing to every method.")
 
 
+ING2_ICONS = {"The meat": "cow", "The chiles": "chile",
+              "Aromatics and spices": "garlic",
+              "To finish and serve": "taco"}
+
+
 def ing2col(groups):
     """Two-column ingredient list."""
     colw = (CW - 26) / 2
@@ -1192,10 +1578,13 @@ def ing2col(groups):
         for kind, a, b in col:
             if kind == "head":
                 ensure(24)
+                gi = ING2_ICONS.get(a)
+                if gi:
+                    icon(gi, x, pdf.get_y() - 0.5, 11)
                 pdf.set_font("U", "BB", 8.6)
                 pdf.set_text_color(*RED)
-                pdf.set_x(x)
-                pdf.cell(colw, 12, a.upper())
+                pdf.set_x(x + (15 if gi else 0))
+                pdf.cell(colw - (15 if gi else 0), 12, a.upper())
                 space(15)
             else:
                 ensure(26)
@@ -1523,10 +1912,16 @@ def build_dayafter():
          "beans and soups for three months."),
     ]:
         ensure(64)
+        di = {"Birria ramen": "bowl", "Mulitas": "taco",
+              "Vampiros": "cheese", "Chilaquiles rojos de birria": "tortilla",
+              "Torta ahogada, birria style": "onion",
+              "Consomme, on its own": "bowl"}.get(title)
+        if di:
+            icon(di, M, pdf.get_y() - 1.5, 14)
         pdf.set_font("D", "B", 11.6)
         pdf.set_text_color(*RED)
-        pdf.set_x(M)
-        pdf.cell(CW, 15, title)
+        pdf.set_x(M + (19 if di else 0))
+        pdf.cell(CW - (19 if di else 0), 15, title)
         space(15)
         para(body, size=10, leading=14, color=INK2, gap_after=6)
     space(2)
