@@ -1,0 +1,10 @@
+# intermediate render artefacts (all reproducible with scripts/)
+frames/seq/
+frames/*.png
+assets/fire_rgba.png
+assets/truck_rgba.png
+output/frames.json
+output/rocket.wav
+__pycache__/
+*.pyc
+.venv/
