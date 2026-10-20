@@ -280,6 +280,28 @@
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
     }
+    /* Photo-first opening; originals remain available in the lightbox. */
+    .hero { padding: 36px 0 48px; }
+    .hero-photos { min-width: 0; display: grid; gap: 14px; }
+    .hero-photos figure { margin: 0; min-width: 0; }
+    .hero-photos .reference-image { display: block; padding: 0; overflow: hidden; border: 1px solid var(--line); }
+    .hero-pantry .reference-image { aspect-ratio: 1.3; }
+    .hero-pantry img { height: 100%; width: 100%; object-fit: cover; object-position: center 60%; }
+    .hero-cleaning .reference-image { aspect-ratio: 3.1; }
+    .hero-cleaning img { height: 100%; width: 100%; object-fit: contain; }
+    .hero-photos figcaption { margin-top: 6px; color: var(--muted); font-size: 9px; line-height: 1.6; }
+    .hero-cleaning .enlarge-hint { bottom: 8px; right: 8px; padding: 5px 9px; font-size: 9px; }
+    .inspiration { padding-top: 54px; padding-bottom: 60px; }
+    @media (max-width: 800px) {
+      .hero { padding: 20px 0 40px; }
+      .hero-photos { order: -1; grid-template-columns: 1fr 1fr; gap: 10px; }
+      .hero-pantry .reference-image, .hero-cleaning .reference-image { aspect-ratio: 1.1; }
+      .hero-cleaning .reference-image { display: grid; place-items: center; }
+      .hero-cleaning img { height: auto; }
+      .hero-photos .enlarge-hint { bottom: 8px; right: 8px; padding: 6px 8px; font-size: 8px; }
+      .hero-photos figcaption { font-size: 8px; }
+      .hero-grid { gap: 28px; }
+    }
   </style>
 </head>
 <body>
@@ -315,12 +337,50 @@
           <a class="hero-scroll" href="#inspiration">See the difference <span aria-hidden="true">↓</span></a>
           <div class="hero-caption"><span>Residential</span><span>Commercial</span><span>Organizing</span></div>
         </div>
-        <div class="hero-art" aria-label="Heather’s Simply Clean Co. logo">
-          <div class="logo-card"><img src="assets/heathers-simply-clean-logo.png" alt="Heather’s Simply Clean Co. logo"></div>
-          <span class="orbit-label orbit-label--top">A little more room to breathe</span>
-          <span class="orbit-label orbit-label--bottom">Clean. Clear. Simply.</span>
-          <div class="float-note"><small>The Heather’s approach</small><strong>Reliable cleaning.<br>Remarkable results.</strong></div>
+        <div class="hero-photos">
+          <figure class="hero-pantry">
+            <button class="reference-image" type="button" aria-label="Enlarge labeled pantry containers reference photo"><img src="assets/references/pantry-clear-containers.jpg" alt="Real pantry shelves with clear cereal containers and white bins labeled protein, extras, bags, paper goods, and canning jars." width="1000" height="1500" fetchpriority="high"><span class="enlarge-hint">Labeled. Sorted. Simple. ↗</span></button>
+            <figcaption>Organization inspiration · <a href="https://prettyprovidence.com/pantry-organization/" target="_blank" rel="noopener noreferrer">Pretty Providence</a> · Not Heather’s work</figcaption>
+          </figure>
+          <figure class="hero-cleaning">
+            <button class="reference-image" type="button" aria-label="Enlarge bathroom cleaning before and after reference"><img src="assets/references/bathroom-before-after.jpg" alt="The same bathroom faucet before and after cleaning, with visible residue removed." width="612" height="229" loading="eager"><span class="enlarge-hint">Before &amp; after ↗</span></button>
+            <figcaption>Cleaning reference · <a href="https://www.istockphoto.com/photos/bathroom-before-and-after" target="_blank" rel="noopener noreferrer">iStock</a> · Not Heather’s work</figcaption>
+          </figure>
         </div>
+      </div>
+    </section>
+
+    <section class="section inspiration" id="inspiration" aria-labelledby="inspiration-title">
+      <div class="wrap">
+        <div class="section-heading">
+          <div>
+            <div class="eyebrow">Real spaces. A visible difference.</div>
+            <h2 id="inspiration-title">Less buildup.<br>Less clutter. More calm.</h2>
+          </div>
+          <p>Cleaning and organizing inspiration: visible grime removed, clear containers, labeled bins, and a dedicated place for everyday essentials.</p>
+        </div>
+        <p class="reference-note">Independent reference examples, not Heather’s client projects. Photos belong to their respective creators; original sources are linked below. Results depend on the space, surfaces, and agreed service.</p>
+        <div class="reference-grid">
+          <figure class="reference-card">
+            <button class="reference-image" type="button" aria-label="Enlarge before and after reference photo"><span class="enlarge-hint">View closer ↗</span><img src="assets/references/bathroom-before-after.jpg" alt="Side-by-side reference photos of the same bathroom faucet and basin, showing visible stains before cleaning and a cleaner surface afterward." width="612" height="229" loading="lazy"></button>
+            <figcaption>
+              <span class="reference-category">01 / Cleaning inspiration</span>
+              <h3>A fresher bathroom</h3>
+              <p>The same faucet and sink, with the difference in the details: less visible residue and cleaner surfaces.</p>
+              <a href="https://www.istockphoto.com/photos/bathroom-before-and-after" target="_blank" rel="noopener noreferrer">Photo reference: iStock bathroom collection <span aria-hidden="true">↗</span></a>
+            </figcaption>
+          </figure>
+          <figure class="reference-card">
+            <button class="reference-image" type="button" aria-label="Enlarge organized pantry with labeled storage bins"><span class="enlarge-hint">View closer ↗</span><img src="assets/references/pantry-labeled-bins.jpg" alt="Real organized pantry with labeled white bins for party stuff, table linens, art supplies, and paper goods, plus neatly grouped jars and groceries." width="1000" height="1500" loading="lazy"></button>
+            <figcaption>
+              <span class="reference-category">02 / Organizing inspiration</span>
+              <h3>A place for everything</h3>
+              <p>Labeled bins, grouped groceries, and dedicated storage zones. An organizing reference for making essentials easier to find and put away—not a before-and-after comparison.</p>
+              <a href="https://prettyprovidence.com/pantry-organization/" target="_blank" rel="noopener noreferrer">Photo &amp; project: Pretty Providence · View original <span aria-hidden="true">↗</span></a>
+            </figcaption>
+          </figure>
+        </div>
+        <a class="button" href="#quote">Tell Heather about your space <span class="arrow" aria-hidden="true">↗</span></a>
       </div>
     </section>
 
@@ -366,40 +426,6 @@
             <a class="text-link" href="#quote">Ask about organizing <span aria-hidden="true">↗</span></a>
           </article>
         </div>
-      </div>
-    </section>
-
-    <section class="section inspiration" id="inspiration" aria-labelledby="inspiration-title">
-      <div class="wrap">
-        <div class="section-heading">
-          <div>
-            <div class="eyebrow">Real spaces. A visible difference.</div>
-            <h2 id="inspiration-title">Less buildup.<br>Less clutter. More calm.</h2>
-          </div>
-          <p>Real-life before-and-after inspiration: visible grime removed and everyday essentials put in order. No showroom-perfect expectations.</p>
-        </div>
-        <p class="reference-note">Independent reference examples, not Heather’s client projects. Photos belong to their respective creators; original sources are linked below. Results depend on the space, surfaces, and agreed service.</p>
-        <div class="reference-grid">
-          <figure class="reference-card">
-            <button class="reference-image" type="button" aria-label="Enlarge before and after reference photo"><span class="enlarge-hint">View closer ↗</span><img src="assets/references/bathroom-before-after.jpg" alt="Side-by-side reference photos of the same bathroom faucet and basin, showing visible stains before cleaning and a cleaner surface afterward." width="612" height="229" loading="lazy"></button>
-            <figcaption>
-              <span class="reference-category">01 / Cleaning inspiration</span>
-              <h3>A fresher bathroom</h3>
-              <p>The same faucet and sink, with the difference in the details: less visible residue and cleaner surfaces.</p>
-              <a href="https://www.istockphoto.com/photos/bathroom-before-and-after" target="_blank" rel="noopener noreferrer">Photo reference: iStock bathroom collection <span aria-hidden="true">↗</span></a>
-            </figcaption>
-          </figure>
-          <figure class="reference-card">
-            <button class="reference-image" type="button" aria-label="Enlarge before and after reference photo"><span class="enlarge-hint">View closer ↗</span><img src="assets/references/pantry-before-after.jpg" alt="TidyMom’s real pantry before and after organizing: the same shelves change from cluttered food packages and bags on the floor to grouped essentials and clear floor space." width="650" height="510" loading="lazy"></button>
-            <figcaption>
-              <span class="reference-category">02 / Organizing inspiration</span>
-              <h3>A pantry for real life</h3>
-              <p>Same pantry, easier mornings. Everyday groceries grouped so you can see what you have and reach what you need.</p>
-              <a href="https://tidymom.net/real-life-pantry-organization/" target="_blank" rel="noopener noreferrer">Photo &amp; project: TidyMom · View original <span aria-hidden="true">↗</span></a>
-            </figcaption>
-          </figure>
-        </div>
-        <a class="button" href="#quote">Tell Heather about your space <span class="arrow" aria-hidden="true">↗</span></a>
       </div>
     </section>
 
