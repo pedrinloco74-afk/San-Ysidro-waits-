@@ -1,0 +1,60 @@
+name: Deploy Heather’s Simply Clean + Jazz Nails
+on:
+  push:
+    branches: [arena/baff07a8-san-ysidro-waits]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout Heather site
+        uses: actions/checkout@v4
+        with:
+          path: heather
+          ref: arena/baff07a8-san-ysidro-waits
+      - name: Checkout Jazz Nails source
+        uses: actions/checkout@v4
+        with:
+          path: jazz-src
+          ref: arena/99e2a0c9-san-ysidro-waits
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: jazz-src/package-lock.json
+      - name: Build Jazz Nails site
+        working-directory: jazz-src
+        run: |
+          npm ci
+          npm run build -- --base=/San-Ysidro-waits-/
+      - name: Assemble combined Pages artifact
+        run: |
+          rm -rf dist
+          mkdir -p dist
+          cp -r jazz-src/dist/* dist/
+          mkdir -p dist/heathers-simply-clean/assets
+          cp heather/index.html dist/heathers-simply-clean/index.html
+          cp -r heather/assets/* dist/heathers-simply-clean/assets/
+          echo "=== Combined dist ==="
+          find dist -type f | head -40
+          ls -lh dist/heathers-simply-clean/index.html dist/heathers-simply-clean/assets/
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
